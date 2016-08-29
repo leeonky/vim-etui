@@ -10,5 +10,5 @@ class MessageBox:
 		self.vim.command("silent botright %dnew %s" % (self.height, self.title.replace(' ', '\ ')))
 		self.vim.set_local('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
 		self.vim.current.buffer[:] = self.message.split("\n")
-		self.vim.map_many_local(['<CR>', '<ESC>'], ":q!<CR>:%dwincmd w<CR>" % old_window_number)
+		self.vim.map_many_local(['<CR>', '<ESC>', '<C-C>'], ":q!<CR>:%dwincmd w<CR>" % old_window_number)
 

@@ -51,4 +51,4 @@ class TestMessageBox(unittest.TestCase):
 		message_box = MessageBox(self.vim, 'Hello', 'Hello\nWorld')
 		message_box.show()
 
-		self.vim.map_many_local.assert_called_with(['<CR>', '<ESC>'], ':q!<CR>:10wincmd w<CR>')
+		self.vim.map_many_local.assert_called_with(['<CR>', '<ESC>', '<C-C>'], ':q!<CR>:10wincmd w<CR>')
