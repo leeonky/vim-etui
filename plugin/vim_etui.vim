@@ -4,17 +4,18 @@
 python import sys
 python import vim
 python sys.path.append(vim.eval('expand("<sfile>:h")'))
+python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets')
 
 " --------------------------------
 "  Function(s)
 " --------------------------------
 function! TemplateExample()
 python << endOfPython
+import vim
 
-from vim_etui import vim_etui_example
+from message_box import MessageBox
 
-for n in range(5):
-    print(vim_etui_example())
+MessageBox(vim, 'Hello you', 'World').show()
 
 endOfPython
 endfunction
