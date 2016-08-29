@@ -6,8 +6,9 @@ class MessageBox:
 		self.height = height
 
 	def show(self):
-		self.vim.command("botright %dnew %s" % (self.height, self.title.replace(' ', '\ ')))
+		old_window_number = self.vim.current.window.number
+		self.vim.command("silent botright %dnew %s" % (self.height, self.title.replace(' ', '\ ')))
 		self.vim.set_local('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
 		self.vim.current.buffer[:] = self.message.split("\n")
-		self.vim.map_many_local(['<CR>', '<ESC>'], ':q!<CR>')
+		self.vim.map_many_local(['<CR>', '<ESC>'], ":q!<CR>:%dwincmd w<CR>" % old_window_number)
 

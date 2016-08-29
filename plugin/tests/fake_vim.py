@@ -1,11 +1,19 @@
 from mock import MagicMock
 
+class FakeWindow:
+	@staticmethod
+	def create():
+		window = FakeWindow()
+		window.number = 1
+		return window
+
 class FakeCurrent:
 
 	@staticmethod
 	def create():
 		current = FakeCurrent()
 		current.buffer = []
+		current.window = FakeWindow.create()
 		return current
 
 class FakeVim:
