@@ -9,14 +9,14 @@ python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets')
 " --------------------------------
 "  Function(s)
 " --------------------------------
-function! TemplateExample()
+function! ShowMessage(title, content)
 python << endOfPython
 import vim
 
 from message_box import MessageBox
 from vim_extend  import VimExtend
 
-MessageBox(VimExtend.extend(vim), message='Hello you', title='World').show()
+MessageBox(VimExtend.extend(vim), message=vim.eval('a:content'), title=vim.eval('a:title')).show()
 
 endOfPython
 endfunction
@@ -24,4 +24,4 @@ endfunction
 " --------------------------------
 "  Expose our commands to the user
 " --------------------------------
-command! Example call TemplateExample()
+command! -nargs=* ShowMessage call ShowMessage(<f-args>)
