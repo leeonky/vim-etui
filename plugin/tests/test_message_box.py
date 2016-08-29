@@ -1,11 +1,12 @@
 import unittest
 from plugin.widgets.message_box import MessageBox
 from plugin.tests.fake_vim import FakeVim
+from plugin.tests.fake_vim import FakeExtend
 
 class TestMessageBox(unittest.TestCase):
 
 	def setUp(self):
-		self.vim = FakeVim.create()
+		self.vim = FakeExtend.extend(FakeVim.create())
 
 
 	def test_should_pop_up_a_full_width_widow_at_the_bottom_with_the_title(self):
@@ -26,7 +27,6 @@ class TestMessageBox(unittest.TestCase):
 
 		self.vim.command.assert_any_call('botright 5new Hello\ Hello')
 
-
 	def test_buffer_should_has_the_right_options(self):
 		message_box = MessageBox(self.vim, 'Hello Hello', 'World!')
 		message_box.show()
@@ -44,3 +44,8 @@ class TestMessageBox(unittest.TestCase):
 
 		assert self.vim.current.buffer[:] == ['Hello', 'World']
 
+	def test_should_map_quit_shortcut(self):
+		message_box = MessageBox(self.vim, 'Hello', 'Hello\nWorld')
+		message_box.show()
+
+		self.vim.map_many_local.assert_called_with(['<CR>', '<ESC>'], ':q!<CR>')

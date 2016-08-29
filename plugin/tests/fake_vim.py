@@ -15,6 +15,14 @@ class FakeVim:
 		vim = FakeVim()
 		vim.command = MagicMock()
 		vim.eval = MagicMock()
-		vim.set_local = MagicMock()
 		vim.current = FakeCurrent.create()
+		return vim
+
+class FakeExtend:
+
+	@staticmethod
+	def extend(vim):
+		vim.set_local = MagicMock()
+		vim.map_local = MagicMock()
+		vim.map_many_local = MagicMock()
 		return vim

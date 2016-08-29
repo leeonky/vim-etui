@@ -9,4 +9,5 @@ class MessageBox:
 		self.vim.command("botright %dnew %s" % (self.height, self.title.replace(' ', '\ ')))
 		self.vim.set_local('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
 		self.vim.current.buffer[:] = self.message.split("\n")
+		self.vim.map_many_local(['<CR>', '<ESC>'], ':q!<CR>')
 
