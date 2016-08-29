@@ -1,44 +1,46 @@
 import unittest
-from mock import MagicMock
 from plugin.widgets.message_box import MessageBox
-
-class FakeVim:
-
-	def __inid__(self):
-		pass
-
-	@staticmethod
-	def create():
-		vim = FakeVim()
-		vim.command = MagicMock()
-		vim.eval = MagicMock()
-		return vim
+from plugin.tests.fake_vim import FakeVim
 
 class TestMessageBox(unittest.TestCase):
 
-	def test_should_pop_up_a_full_width_widow_at_the_bottom_with_the_title(self):
-		vim = FakeVim.create()
+	def setUp(self):
+		self.vim = FakeVim.create()
 
-		message_box = MessageBox(vim, 'Hello', 'World!')
+
+	def test_should_pop_up_a_full_width_widow_at_the_bottom_with_the_title(self):
+		message_box = MessageBox(self.vim, 'Hello', 'World!')
 		message_box.show()
 
-		vim.command.assert_any_call('botright new Hello')
+		self.vim.command.assert_any_call('botright 10new Hello')
 
 	def test_window_title_escape_the_space(self):
-		vim = FakeVim.create()
-
-		message_box = MessageBox(vim, 'Hello Hello', 'World!')
+		message_box = MessageBox(self.vim, 'Hello Hello', 'World!')
 		message_box.show()
 
-		vim.command.assert_any_call('botright new Hello\ Hello')
+		self.vim.command.assert_any_call('botright 10new Hello\ Hello')
 
-	def test_should_change_focus_to_new_window(self):
-		vim = FakeVim.create()
-		vim.eval.return_value = 5
-
-		message_box = MessageBox(vim, 'Hello Hello', 'World!')
+	def test_should_message_with_height(self):
+		message_box = MessageBox(self.vim, 'Hello Hello', 'World!', height=5)
 		message_box.show()
 
-		vim.eval.assert_any_call("bufwinnr('^Hello Hello$')")
-		vim.command.assert_any_call("4wincmd w")
+		self.vim.command.assert_any_call('botright 5new Hello\ Hello')
+
+
+	def test_buffer_should_has_the_right_options(self):
+		message_box = MessageBox(self.vim, 'Hello Hello', 'World!')
+		message_box.show()
+		self.vim.set_local.assert_any_call('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
+
+	def test_should_output_message_to_buffer(self):
+		message_box = MessageBox(self.vim, 'Hello Hello', 'World!')
+		message_box.show()
+
+		assert self.vim.current.buffer[:] == ['World!']
+
+	def test_should_output_multi_line_message_to_buffer(self):
+		message_box = MessageBox(self.vim, 'Hello', 'Hello\nWorld')
+		message_box.show()
+
+		assert self.vim.current.buffer[:] == ['Hello', 'World']
 

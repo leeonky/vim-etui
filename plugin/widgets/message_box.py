@@ -1,11 +1,12 @@
 class MessageBox:
-	def __init__(self, vi, title, message):
+	def __init__(self, vi, title='', message='', height=10):
 		self.vim = vi
 		self.title = title
 		self.message = message
+		self.height = height
 
 	def show(self):
-		self.vim.command("botright new " + self.title.replace(' ', '\ '))
-		buffer_index = self.vim.eval("bufwinnr('^" + self.title + "$')")-1
-		self.vim.command(str(buffer_index) + "wincmd w")
+		self.vim.command("botright %dnew %s" % (self.height, self.title.replace(' ', '\ ')))
+		self.vim.set_local('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
+		self.vim.current.buffer[:] = self.message.split("\n")
 

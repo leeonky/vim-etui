@@ -14,8 +14,9 @@ python << endOfPython
 import vim
 
 from message_box import MessageBox
+from vim_extend  import VimExtend
 
-MessageBox(vim, 'Hello you', 'World').show()
+MessageBox(VimExtend.extend(vim), message='Hello you', title='World').show()
 
 endOfPython
 endfunction
