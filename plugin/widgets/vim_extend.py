@@ -21,7 +21,10 @@ class VimExtend:
 			for key in keys:
 				for _map in maps:
 					vim.command('%s <silent> <buffer> %s %s' % (_map, key, action))
-
 		vim.map_many_local = types.MethodType(map_many_local, vim)
 
+		def window_number_of_buffer(self, title):
+			return int(vim.eval("bufwinnr('^%s$')" % (title)))
+
+		vim.window_number_of_buffer = types.MethodType(window_number_of_buffer, vim)
 		return vim

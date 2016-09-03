@@ -33,4 +33,5 @@ class FakeExtend:
 		vim.set_local = MagicMock()
 		vim.map_local = MagicMock()
 		vim.map_many_local = MagicMock()
+		vim.window_number_of_buffer = MagicMock()
 		return vim

@@ -49,6 +49,14 @@ class TestOpenNew(unittest.TestCase):
 
 		self.vim.command.assert_any_call('silent botright 10vnew Hello\ Hello')
 
+class TestOpenShow(unittest.TestCase):
+
+	def setUp(self):
+		self.vim = FakeExtend.extend(FakeVim.create())
+
+	def should_open_new_if_no_samed_title_form(self):
+		pass;
+
 class TestNormalForm(unittest.TestCase):
 
 	def setUp(self):
@@ -91,3 +99,4 @@ class TestCloseAndFocusBack(unittest.TestCase):
 		prop.update_property(self.vim)
 
 		self.vim.map_many_local.assert_called_with(['<CR>', '<ESC>', '<C-C>'], ':q!<CR>:10wincmd w<CR>')
+
