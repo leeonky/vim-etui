@@ -1,4 +1,6 @@
-class ListMenu:
-	def __init__(self, vi, title=''):
-		self.vim = vi
-		self.title = title
+from dropdown_form import DropdownForm
+
+class ListMenu(DropdownForm):
+	def __init__(self, vim, title, height):
+		super(ListMenu, self).__init__(vim,
+			DropdownForm.OpenShow(DropdownForm.Position.Bottom, 10, title))
