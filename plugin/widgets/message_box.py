@@ -1,14 +1,10 @@
-class MessageBox(object):
-	def __init__(self, vi, title='', message='', height=10):
-		self.vim = vi
-		self.title = title
-		self.message = message
-		self.height = height
+from dropdown_form import DropdownForm
 
-	def show(self):
-		old_window_number = self.vim.current.window.number
-		self.vim.command("silent botright %dnew %s" % (self.height, self.title.replace(' ', '\ ')))
-		self.vim.set_local('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
-		self.vim.current.buffer[:] = self.message.split("\n")
-		self.vim.map_many_local(['<CR>', '<ESC>', '<C-C>'], ":q!<CR>:%dwincmd w<CR>" % old_window_number)
+class MessageBox(DropdownForm):
+	def __init__(self, vim, title='', message='', height=10):
+		super(MessageBox, self).__init__(vim,
+				DropdownForm.OpenNew(DropdownForm.Position.Bottom, 10, title),
+				DropdownForm.NormalForm(),
+				DropdownForm.TextContent(message),
+				DropdownForm.CloseAndFocusBack(vim.current.window.number, '<CR>', '<ESC>', '<C-C>'))
 

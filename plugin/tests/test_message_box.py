@@ -1,6 +1,8 @@
 import unittest
 from mock import MagicMock
+from mock import patch
 from plugin.widgets.message_box import MessageBox
+from plugin.widgets.dropdown_form import DropdownForm
 from plugin.tests.fake_vim import FakeVim
 from plugin.tests.fake_vim import FakeExtend
 
@@ -9,46 +11,21 @@ class TestMessageBox(unittest.TestCase):
 	def setUp(self):
 		self.vim = FakeExtend.extend(FakeVim.create())
 
+	@patch("plugin.widgets.dropdown_form.DropdownForm.CloseAndFocusBack.__init__")
+	@patch("plugin.widgets.dropdown_form.DropdownForm.TextContent.__init__")
+	@patch("plugin.widgets.dropdown_form.DropdownForm.NormalForm.__init__")
+	@patch("plugin.widgets.dropdown_form.DropdownForm.OpenNew.__init__")
+	def test_create_with_right_properties(self, open_new_init, normal_form_init,
+			text_content_init, close_and_focus_back_init):
+		self.vim.current.window.number = 1
+		open_new_init.return_value = None
+		normal_form_init.return_value = None
+		text_content_init.return_value = None
+		close_and_focus_back_init.return_value = None
 
-	def test_should_pop_up_a_full_width_widow_at_the_bottom_with_the_title(self):
-		message_box = MessageBox(self.vim, 'Hello', 'World!')
-		message_box.show()
+		MessageBox(self.vim, title='title', message='message', height=10)
 
-		self.vim.command.assert_any_call('silent botright 10new Hello')
-
-	def test_window_title_escape_the_space(self):
-		message_box = MessageBox(self.vim, 'Hello Hello', 'World!')
-		message_box.show()
-
-		self.vim.command.assert_any_call('silent botright 10new Hello\ Hello')
-
-	def test_should_message_with_height(self):
-		message_box = MessageBox(self.vim, 'Hello Hello', 'World!', height=5)
-		message_box.show()
-
-		self.vim.command.assert_any_call('silent botright 5new Hello\ Hello')
-
-	def test_buffer_should_has_the_right_options(self):
-		message_box = MessageBox(self.vim, 'Hello Hello', 'World!')
-		message_box.show()
-		self.vim.set_local.assert_any_call('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
-
-	def test_should_output_message_to_buffer(self):
-		message_box = MessageBox(self.vim, 'Hello Hello', 'World!')
-		message_box.show()
-
-		assert self.vim.current.buffer[:] == ['World!']
-
-	def test_should_output_multi_line_message_to_buffer(self):
-		message_box = MessageBox(self.vim, 'Hello', 'Hello\nWorld')
-		message_box.show()
-
-		assert self.vim.current.buffer[:] == ['Hello', 'World']
-
-	def test_should_map_quit_shortcut(self):
-		self.vim.current.window.number = 10
-
-		message_box = MessageBox(self.vim, 'Hello', 'Hello\nWorld')
-		message_box.show()
-
-		self.vim.map_many_local.assert_called_with(['<CR>', '<ESC>', '<C-C>'], ':q!<CR>:10wincmd w<CR>')
+		open_new_init.assert_called_with(DropdownForm.Position.Bottom, 10, 'title')
+		normal_form_init.assert_called_with()
+		text_content_init.assert_called_with('message')
+		close_and_focus_back_init.assert_called_with(1, '<CR>', '<ESC>', '<C-C>')
