@@ -1,4 +1,4 @@
-class MessageBox:
+class MessageBox(object):
 	def __init__(self, vi, title='', message='', height=10):
 		self.vim = vi
 		self.title = title

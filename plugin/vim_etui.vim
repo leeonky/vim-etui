@@ -9,7 +9,7 @@ python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets')
 " --------------------------------
 "  Function(s)
 " --------------------------------
-function! ShowMessage(title, content)
+function! EUIMessage(title, content)
 python << endOfPython
 import vim
 
@@ -24,4 +24,4 @@ endfunction
 " --------------------------------
 "  Expose our commands to the user
 " --------------------------------
-command! -nargs=* ShowMessage call ShowMessage(<f-args>)
+command! -nargs=* EUIMessage call EUIMessage(<f-args>)
