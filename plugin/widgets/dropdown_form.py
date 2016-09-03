@@ -40,6 +40,10 @@ class DropdownForm(object):
 		def update_property(self, vim):
 			vim.current.buffer[:] = self.text.split("\n")
 
+	class DisableEdit(object):
+		def update_property(self, vim):
+			vim.set_local('nomodifiable')
+
 	class CloseAndFocusBack(object):
 		def __init__(self, old_window_number, key, *keys):
 			self.old_window_number = old_window_number

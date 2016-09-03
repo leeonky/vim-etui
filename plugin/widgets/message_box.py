@@ -6,5 +6,6 @@ class MessageBox(DropdownForm):
 			DropdownForm.OpenNew(DropdownForm.Position.Bottom, 10, title),
 			DropdownForm.NormalForm(),
 			DropdownForm.TextContent(message),
+			DropdownForm.DisableEdit(),
 			DropdownForm.CloseAndFocusBack(vim.current.window.number, '<CR>', '<ESC>', '<C-C>'))
 

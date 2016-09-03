@@ -1,4 +1,5 @@
 from mock import MagicMock
+import unittest
 
 class FakeWindow:
 	@staticmethod
@@ -35,3 +36,13 @@ class FakeExtend:
 		vim.map_many_local = MagicMock()
 		vim.window_number_of_buffer = MagicMock()
 		return vim
+
+class TestWithFakeVim(unittest.TestCase):
+
+	def setUp(self):
+		self._vim = FakeExtend.extend(FakeVim.create())
+
+	@property
+	def vim(self):
+		return self._vim
+

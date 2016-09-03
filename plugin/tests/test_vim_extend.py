@@ -1,13 +1,13 @@
 import unittest
 from mock import MagicMock
+from plugin.tests.fake_vim import TestWithFakeVim
 from plugin.tests.fake_vim import FakeVim
 from plugin.widgets.vim_extend import VimExtend
 
 class TestVimExtend(unittest.TestCase):
 
 	def setUp(self):
-		self.vim = FakeVim.create()
-		VimExtend.extend(self.vim)
+		self.vim = VimExtend.extend(FakeVim.create())
 
 	def test_should_extend_set_local(self):
 		self.vim.set_local('hello=world')

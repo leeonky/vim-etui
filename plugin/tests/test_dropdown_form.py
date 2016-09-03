@@ -1,13 +1,8 @@
-import unittest
 from mock import MagicMock
 from plugin.widgets.dropdown_form import DropdownForm
-from plugin.tests.fake_vim import FakeVim
-from plugin.tests.fake_vim import FakeExtend
+from plugin.tests.fake_vim import TestWithFakeVim
 
-class TestDropdownForm(unittest.TestCase):
-
-	def setUp(self):
-		self.vim = FakeExtend.extend(FakeVim.create())
+class TestDropdownForm(TestWithFakeVim):
 
 	def test_should_show_with_all_properties(self):
 		class Prop1:
@@ -30,10 +25,7 @@ class TestDropdownForm(unittest.TestCase):
 		prop1.update_property.assert_called_with(vim)
 		prop2.update_property.assert_called_with(vim)
 
-class TestOpenNew(unittest.TestCase):
-
-	def setUp(self):
-		self.vim = FakeExtend.extend(FakeVim.create())
+class TestOpenNew(TestWithFakeVim):
 
 	def test_should_pop_up_a_full_width_widow_at_the_bottom_with_the_title(self):
 		prop = DropdownForm.OpenNew(position=DropdownForm.Position.Bottom, size=10, title='Hello')
@@ -49,10 +41,7 @@ class TestOpenNew(unittest.TestCase):
 
 		self.vim.command.assert_any_call('silent botright 10vnew Hello\ Hello')
 
-class TestOpenShow(unittest.TestCase):
-
-	def setUp(self):
-		self.vim = FakeExtend.extend(FakeVim.create())
+class TestOpenShow(TestWithFakeVim):
 
 	def test_should_open_new_if_no_samed_title_form(self):
 		self.vim.window_number_of_buffer.return_value = -1
@@ -70,10 +59,7 @@ class TestOpenShow(unittest.TestCase):
 
 		self.vim.command.assert_called_with('1wincmd w')
 
-class TestNormalForm(unittest.TestCase):
-
-	def setUp(self):
-		self.vim = FakeExtend.extend(FakeVim.create())
+class TestNormalForm(TestWithFakeVim):
 
 	def test_buffer_should_has_the_right_options(self):
 		prop = DropdownForm.NormalForm()
@@ -82,10 +68,7 @@ class TestNormalForm(unittest.TestCase):
 
 		self.vim.set_local.assert_any_call('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
 
-class TestTextContent(unittest.TestCase):
-
-	def setUp(self):
-		self.vim = FakeExtend.extend(FakeVim.create())
+class TestTextContent(TestWithFakeVim):
 
 	def test_should_output_message_to_buffer(self):
 		prop = DropdownForm.TextContent('World!')
@@ -101,10 +84,16 @@ class TestTextContent(unittest.TestCase):
 
 		assert self.vim.current.buffer[:] == ['Hello', 'World']
 
-class TestCloseAndFocusBack(unittest.TestCase):
+class TestDisableEdit(TestWithFakeVim):
 
-	def setUp(self):
-		self.vim = FakeExtend.extend(FakeVim.create())
+	def test_should_set_nomodifiable(self):
+		prop = DropdownForm.DisableEdit()
+
+		prop.update_property(self.vim)
+
+		self.vim.set_local.assert_any_call('nomodifiable')
+
+class TestCloseAndFocusBack(TestWithFakeVim):
 
 	def test_should_map_quit_shortcut(self):
 		prop = DropdownForm.CloseAndFocusBack(10, '<CR>', '<ESC>', '<C-C>')
