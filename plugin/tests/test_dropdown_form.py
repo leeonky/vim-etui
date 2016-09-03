@@ -54,8 +54,21 @@ class TestOpenShow(unittest.TestCase):
 	def setUp(self):
 		self.vim = FakeExtend.extend(FakeVim.create())
 
-	def should_open_new_if_no_samed_title_form(self):
-		pass;
+	def test_should_open_new_if_no_samed_title_form(self):
+		self.vim.window_number_of_buffer.return_value = -1
+		prop = DropdownForm.OpenShow(position=DropdownForm.Position.Right, size=10, title='Hello Hello')
+
+		prop.update_property(self.vim)
+
+		self.vim.command.assert_called_with('silent botright 10vnew Hello\ Hello')
+
+	def test_should_open_new_if_no_samed_title_form(self):
+		self.vim.window_number_of_buffer.return_value = 1
+		prop = DropdownForm.OpenShow(position=DropdownForm.Position.Right, size=10, title='Hello Hello')
+
+		prop.update_property(self.vim)
+
+		self.vim.command.assert_called_with('1wincmd w')
 
 class TestNormalForm(unittest.TestCase):
 

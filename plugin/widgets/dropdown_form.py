@@ -9,23 +9,26 @@ class DropdownForm(object):
 
 	class OpenNew(object):
 		def __init__(self, position, size, title):
-			self.position = {
-					DropdownForm.Position.Bottom: 'botright',
-					DropdownForm.Position.Right: 'botright'
-					}[position]
+			self.position = position
 			self.size = size
-			self.new = {
-					DropdownForm.Position.Bottom: 'new',
-					DropdownForm.Position.Right: 'vnew'
-					}[position]
 			self.title = title.replace(' ', '\ ')
-			pass
 		def update_property(self, vim):
-			vim.command('silent %s %d%s %s' % (self.position, self.size, self.new, self.title))
+			vim.command('silent %s %d%s %s' % (self.position[0], self.size, self.position[1], self.title))
+
+	class OpenShow(object):
+		def __init__(self, position, size, title):
+			self.title = title
+			self.open_new = DropdownForm.OpenNew(position, size, title)
+		def update_property(self, vim):
+			window_number = vim.window_number_of_buffer(self.title)
+			if(window_number<0):
+				self.open_new.update_property(vim)
+			else:
+				vim.command('%dwincmd w' % (window_number))
 
 	class Position(object):
-		Bottom = 1
-		Right = 2
+		Bottom = ('botright', 'new')
+		Right = ('botright', 'vnew')
 
 	class NormalForm(object):
 		def update_property(self, vim):
