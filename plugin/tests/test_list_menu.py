@@ -33,7 +33,7 @@ class TestListMenu(TestWithFakeVim):
 		open_show_init.assert_called_with(DropdownForm.Position.Bottom, 10, 'title')
 		normal_form_init.assert_called_with()
 		line_highlight_init.assert_called_with()
-		color_row_init.assert_called_with(2, ['red', 'yellow'])
+		color_row_init.assert_called_with(['red', 'yellow'])
 		row_column_content_init.assert_called_with(['a'], ['b'])
 		disable_edit_init.assert_called_with()
 		close_and_focus_back_init.assert_called_with(1, '<C-C>')

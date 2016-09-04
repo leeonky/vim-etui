@@ -63,10 +63,9 @@ class DropdownForm(object):
 			vim.current.buffer[:] = join_column_with_tab(max_width_for_each_column())
 
 	class ColorRow(object):
-		def __init__(self, line_count, fg_colors, bg_colors=[]):
+		def __init__(self, fg_colors, bg_colors=[]):
 			self.fg_colors = fg_colors
 			self.bg_colors = bg_colors
-			self.line_count = line_count
 		def update_property(self, vim):
 			def back_color_command(fg_color_index):
 				if len(self.bg_colors)>0:
@@ -78,7 +77,7 @@ class DropdownForm(object):
 				return 'ctermfg=%s guifg=%s' % (color, color)
 			for index, color in list(enumerate(self.fg_colors)):
 				vim.command('highlight eui_line_%s %s%s' % (color, font_color_command(color), back_color_command(index)))
-			for line_number in range(0, self.line_count):
+			for line_number in range(0, len(vim.current.buffer)):
 				vim.command("syntax region eui_line_%s start=/\%%%dl/ end=/\%%%dl/" % (self.fg_colors[line_number%len(self.fg_colors)], line_number+1, line_number+2))
 
 	class DisableEdit(object):

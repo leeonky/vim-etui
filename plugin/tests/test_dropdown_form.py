@@ -119,8 +119,12 @@ class TestRowColumnContent(TestWithFakeVim):
 
 class TestColorRow(TestWithFakeVim):
 
+	def setUp(self):
+		super(TestColorRow, self).setUp()
+		self.vim.current.buffer = ['a', 'b']
+
 	def test_should_only_set_fg_color(self):
-		prop = DropdownForm.ColorRow(2, ['red', 'blue'])
+		prop = DropdownForm.ColorRow(['red', 'blue'])
 
 		prop.update_property(self.vim)
 
@@ -131,7 +135,7 @@ class TestColorRow(TestWithFakeVim):
 				call('syntax region eui_line_blue start=/\%2l/ end=/\%3l/')])
 
 	def test_should_only_set_fg_color_and_bg_color(self):
-		prop = DropdownForm.ColorRow(2, ['red', 'blue'], ['write', 'black'])
+		prop = DropdownForm.ColorRow(['red', 'blue'], ['write', 'black'])
 
 		prop.update_property(self.vim)
 
@@ -140,6 +144,25 @@ class TestColorRow(TestWithFakeVim):
 				call('highlight eui_line_blue ctermfg=blue guifg=blue ctermbg=black guibg=black'),
 				call('syntax region eui_line_red start=/\%1l/ end=/\%2l/'),
 				call('syntax region eui_line_blue start=/\%2l/ end=/\%3l/')])
+
+	def test_should_only_set_fg_color_and_one_bg_color(self):
+		prop = DropdownForm.ColorRow(['red', 'blue'], ['write'])
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(self.vim.command.call_args_list, [
+				call('highlight eui_line_red ctermfg=red guifg=red ctermbg=write guibg=write'),
+				call('highlight eui_line_blue ctermfg=blue guifg=blue ctermbg=write guibg=write'),
+				call('syntax region eui_line_red start=/\%1l/ end=/\%2l/'),
+				call('syntax region eui_line_blue start=/\%2l/ end=/\%3l/')])
+
+# class TestAlphabetLine(TestWithFakeVim):
+
+	# def test_should_show_alphbet(self):
+		# self.vim.current.buffer[:] = ['a', 'b']
+		# prop = DropdownForm.AlphabetLine()
+
+		# prop.update_property(self.vim)
 
 class TestDisableEdit(TestWithFakeVim):
 
