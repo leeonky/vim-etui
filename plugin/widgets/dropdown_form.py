@@ -48,16 +48,18 @@ class DropdownForm(object):
 		def __init__(self, *lines):
 			self.lines = list(lines)
 		def update_property(self, vim):
+			def max_column_count():
+				return max(map(lambda cols: len(cols), self.lines))
 			def max_width_for_each_column():
-				max_widthes = [0] * len(self.lines[0])
-				for line in self.lines:
-					for col in list(enumerate(line)):
+				max_widthes = [0] * max_column_count()
+				for cols in self.lines:
+					for col in list(enumerate(cols)):
 						max_widthes[col[0]] = max(max_widthes[col[0]], len(col[1]))
 				return max_widthes
-			def extend_column_to_fixed_width(max_widthes, line):
-				return map(lambda width, col: ("%%-%ds" % (width))%(col), max_widthes, line)
+			def extend_column_to_fixed_width(max_widthes, cols):
+				return map(lambda width, col: ("%%-%ds" % (width))%(col), max_widthes[:len(cols)], cols)
 			def join_column_with_tab(max_widthes):
-				return map(lambda line: "\t".join(extend_column_to_fixed_width(max_widthes, line)), self.lines)
+				return map(lambda cols: "\t".join(extend_column_to_fixed_width(max_widthes, cols)), self.lines)
 			vim.current.buffer[:] = join_column_with_tab(max_width_for_each_column())
 
 	class DisableEdit(object):

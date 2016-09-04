@@ -109,6 +109,13 @@ class TestRowColumnContent(TestWithFakeVim):
 
 		self.assertEqual(["A0 \tHello", "A25\tWorld"], self.vim.current.buffer[:])
 
+	def test_with_different_columns(self):
+		prop = DropdownForm.RowColumnContent(['A25'], ['A0', 'abc'])
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(["A25", "A0 \tabc"], self.vim.current.buffer[:])
+
 class TestDisableEdit(TestWithFakeVim):
 
 	def test_should_set_nomodifiable(self):
