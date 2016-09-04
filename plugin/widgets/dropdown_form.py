@@ -71,8 +71,7 @@ class DropdownForm(object):
 				if len(self.bg_colors)>0:
 					bg_color = self.bg_colors[fg_color_index%len(self.bg_colors)]
 					return ' ctermbg=%s guibg=%s' % (bg_color, bg_color)
-				else:
-					return ''
+				return ''
 			def font_color_command(color):
 				return 'ctermfg=%s guifg=%s' % (color, color)
 			for index, color in list(enumerate(self.fg_colors)):

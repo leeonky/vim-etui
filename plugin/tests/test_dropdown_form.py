@@ -156,14 +156,6 @@ class TestColorRow(TestWithFakeVim):
 				call('syntax region eui_line_red start=/\%1l/ end=/\%2l/'),
 				call('syntax region eui_line_blue start=/\%2l/ end=/\%3l/')])
 
-# class TestAlphabetLine(TestWithFakeVim):
-
-	# def test_should_show_alphbet(self):
-		# self.vim.current.buffer[:] = ['a', 'b']
-		# prop = DropdownForm.AlphabetLine()
-
-		# prop.update_property(self.vim)
-
 class TestDisableEdit(TestWithFakeVim):
 
 	def test_should_set_nomodifiable(self):
