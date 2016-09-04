@@ -32,4 +32,4 @@ class TestListMenu(TestWithFakeVim):
 		line_highlight_init.assert_called_with()
 		row_column_content_init.assert_called_with(['a'], ['b'])
 		disable_edit_init.assert_called_with()
-		close_and_focus_back_init.assert_called_with(1, '<CR>', '<ESC>', '<C-C>')
+		close_and_focus_back_init.assert_called_with(1, '<C-C>')

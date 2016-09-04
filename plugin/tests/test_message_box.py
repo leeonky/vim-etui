@@ -24,4 +24,4 @@ class TestMessageBox(TestWithFakeVim):
 		normal_form_init.assert_called_with()
 		text_content_init.assert_called_with('message')
 		disable_edit_init.assert_called_with()
-		close_and_focus_back_init.assert_called_with(1, '<CR>', '<ESC>', '<C-C>')
+		close_and_focus_back_init.assert_called_with(1, '<CR>', '<C-C>')

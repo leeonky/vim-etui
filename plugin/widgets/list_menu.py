@@ -8,4 +8,5 @@ class ListMenu(DropdownForm):
 			DropdownForm.LineHighlight(),
 			DropdownForm.RowColumnContent(*lines),
 			DropdownForm.DisableEdit(),
-			DropdownForm.CloseAndFocusBack(vim.current.window.number, '<CR>', '<ESC>', '<C-C>'))
+			DropdownForm.CloseAndFocusBack(vim.current.window.number, '<C-C>'))
+
