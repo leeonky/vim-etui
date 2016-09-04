@@ -68,6 +68,15 @@ class TestNormalForm(TestWithFakeVim):
 
 		self.vim.set_local.assert_any_call('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
 
+class TestLineHighlight(TestWithFakeVim):
+
+	def test_buffer_should_has_the_right_options(self):
+		prop = DropdownForm.LineHighlight()
+
+		prop.update_property(self.vim)
+
+		self.vim.set_local.assert_any_call('nocursorcolumn cursorline')
+
 class TestTextContent(TestWithFakeVim):
 
 	def test_should_output_message_to_buffer(self):
@@ -83,6 +92,22 @@ class TestTextContent(TestWithFakeVim):
 		prop.update_property(self.vim)
 
 		assert self.vim.current.buffer[:] == ['Hello', 'World']
+
+class TestRowColumnContent(TestWithFakeVim):
+
+	def test_should_output_cell_join_with_tab(self):
+		prop = DropdownForm.RowColumnContent(['A01', 'Hello'], ['A25', 'World'])
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(["A01\tHello", "A25\tWorld"], self.vim.current.buffer[:])
+
+	def test_should_append_space_to_same_width_before_join(self):
+		prop = DropdownForm.RowColumnContent(['A0', 'Hello'], ['A25', 'World'])
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(["A0 \tHello", "A25\tWorld"], self.vim.current.buffer[:])
 
 class TestDisableEdit(TestWithFakeVim):
 

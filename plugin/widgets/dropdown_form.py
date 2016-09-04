@@ -34,11 +34,31 @@ class DropdownForm(object):
 		def update_property(self, vim):
 			vim.set_local('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
 
+	class LineHighlight(object):
+		def update_property(self, vim):
+			vim.set_local('nocursorcolumn cursorline')
+
 	class TextContent(object):
 		def __init__(self, text):
 			self.text = text
 		def update_property(self, vim):
 			vim.current.buffer[:] = self.text.split("\n")
+
+	class RowColumnContent(object):
+		def __init__(self, *lines):
+			self.lines = list(lines)
+		def update_property(self, vim):
+			def max_width_for_each_column():
+				max_widthes = [0] * len(self.lines[0])
+				for line in self.lines:
+					for col in list(enumerate(line)):
+						max_widthes[col[0]] = max(max_widthes[col[0]], len(col[1]))
+				return max_widthes
+			def extend_column_to_fixed_width(max_widthes, line):
+				return map(lambda width, col: ("%%-%ds" % (width))%(col), max_widthes, line)
+			def join_column_with_tab(max_widthes):
+				return map(lambda line: "\t".join(extend_column_to_fixed_width(max_widthes, line)), self.lines)
+			vim.current.buffer[:] = join_column_with_tab(max_width_for_each_column())
 
 	class DisableEdit(object):
 		def update_property(self, vim):
