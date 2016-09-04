@@ -1,4 +1,5 @@
 from mock import MagicMock
+from mock import call
 from plugin.widgets.dropdown_form import DropdownForm
 from plugin.tests.fake_vim import TestWithFakeVim
 
@@ -32,14 +33,14 @@ class TestOpenNew(TestWithFakeVim):
 
 		prop.update_property(self.vim)
 
-		self.vim.command.assert_any_call('silent botright 10new Hello')
+		self.vim.command.assert_called_with('silent botright 10new Hello')
 
 	def test_window_title_escape_the_space(self):
 		prop = DropdownForm.OpenNew(position=DropdownForm.Position.Right, size=10, title='Hello Hello')
 
 		prop.update_property(self.vim)
 
-		self.vim.command.assert_any_call('silent botright 10vnew Hello\ Hello')
+		self.vim.command.assert_called_with('silent botright 10vnew Hello\ Hello')
 
 class TestOpenShow(TestWithFakeVim):
 
@@ -66,7 +67,7 @@ class TestNormalForm(TestWithFakeVim):
 
 		prop.update_property(self.vim)
 
-		self.vim.set_local.assert_any_call('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
+		self.vim.set_local.assert_called_with('buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap nonumber')
 
 class TestLineHighlight(TestWithFakeVim):
 
@@ -75,7 +76,7 @@ class TestLineHighlight(TestWithFakeVim):
 
 		prop.update_property(self.vim)
 
-		self.vim.set_local.assert_any_call('nocursorcolumn cursorline')
+		self.vim.set_local.assert_called_with('nocursorcolumn cursorline')
 
 class TestTextContent(TestWithFakeVim):
 
@@ -116,6 +117,30 @@ class TestRowColumnContent(TestWithFakeVim):
 
 		self.assertEqual(["A25", "A0 \tabc"], self.vim.current.buffer[:])
 
+class TestColorRow(TestWithFakeVim):
+
+	def test_should_only_set_fg_color(self):
+		prop = DropdownForm.ColorRow(2, ['red', 'blue'])
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(self.vim.command.call_args_list, [
+				call('highlight eui_line_red ctermfg=red guifg=red'),
+				call('highlight eui_line_blue ctermfg=blue guifg=blue'),
+				call('syntax region eui_line_red start=/\%1l/ end=/\%2l/'),
+				call('syntax region eui_line_blue start=/\%2l/ end=/\%3l/')])
+
+	def test_should_only_set_fg_color_and_bg_color(self):
+		prop = DropdownForm.ColorRow(2, ['red', 'blue'], ['write', 'black'])
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(self.vim.command.call_args_list, [
+				call('highlight eui_line_red ctermfg=red guifg=red ctermbg=write guibg=write'),
+				call('highlight eui_line_blue ctermfg=blue guifg=blue ctermbg=black guibg=black'),
+				call('syntax region eui_line_red start=/\%1l/ end=/\%2l/'),
+				call('syntax region eui_line_blue start=/\%2l/ end=/\%3l/')])
+
 class TestDisableEdit(TestWithFakeVim):
 
 	def test_should_set_nomodifiable(self):
@@ -123,7 +148,7 @@ class TestDisableEdit(TestWithFakeVim):
 
 		prop.update_property(self.vim)
 
-		self.vim.set_local.assert_any_call('nomodifiable')
+		self.vim.set_local.assert_called_with('nomodifiable')
 
 class TestCloseAndFocusBack(TestWithFakeVim):
 

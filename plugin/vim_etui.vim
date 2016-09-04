@@ -21,20 +21,20 @@ MessageBox(VimExtend.extend(vim), message=vim.eval('a:content'), title=vim.eval(
 endOfPython
 endfunction
 
-function! EUIListMenu(title, lines)
+function! EUIListMenu(title, lines, colors)
 python << endOfPython
 import vim
 
 from list_menu import ListMenu
 from vim_extend  import VimExtend
 
-ListMenu(VimExtend.extend(vim), title=vim.eval('a:title'), lines=vim.eval('a:lines')).show()
+ListMenu(VimExtend.extend(vim), title=vim.eval('a:title'), lines=vim.eval('a:lines'), colors=vim.eval('a:colors')).show()
 
 endOfPython
 endfunction
 
 function! TestListMenu()
-	call EUIListMenu('Hello', [['A', 'B'], ['00', '01']])
+	call EUIListMenu('Hello', [['A', 'B'], ['00', '01'], ['aoeuoeau']], ['green', 'yellow'])
 endfunction
 
 " --------------------------------

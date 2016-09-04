@@ -53,14 +53,33 @@ class DropdownForm(object):
 			def max_width_for_each_column():
 				max_widthes = [0] * max_column_count()
 				for cols in self.lines:
-					for col in list(enumerate(cols)):
-						max_widthes[col[0]] = max(max_widthes[col[0]], len(col[1]))
+					for index, col in list(enumerate(cols)):
+						max_widthes[index] = max(max_widthes[index], len(col))
 				return max_widthes
 			def extend_column_to_fixed_width(max_widthes, cols):
 				return map(lambda width, col: ("%%-%ds" % (width))%(col), max_widthes[:len(cols)], cols)
 			def join_column_with_tab(max_widthes):
 				return map(lambda cols: "\t".join(extend_column_to_fixed_width(max_widthes, cols)), self.lines)
 			vim.current.buffer[:] = join_column_with_tab(max_width_for_each_column())
+
+	class ColorRow(object):
+		def __init__(self, line_count, fg_colors, bg_colors=[]):
+			self.fg_colors = fg_colors
+			self.bg_colors = bg_colors
+			self.line_count = line_count
+		def update_property(self, vim):
+			def back_color_command(fg_color_index):
+				if len(self.bg_colors)>0:
+					bg_color = self.bg_colors[fg_color_index%len(self.bg_colors)]
+					return ' ctermbg=%s guibg=%s' % (bg_color, bg_color)
+				else:
+					return ''
+			def font_color_command(color):
+				return 'ctermfg=%s guifg=%s' % (color, color)
+			for index, color in list(enumerate(self.fg_colors)):
+				vim.command('highlight eui_line_%s %s%s' % (color, font_color_command(color), back_color_command(index)))
+			for line_number in range(0, self.line_count):
+				vim.command("syntax region eui_line_%s start=/\%%%dl/ end=/\%%%dl/" % (self.fg_colors[line_number%len(self.fg_colors)], line_number+1, line_number+2))
 
 	class DisableEdit(object):
 		def update_property(self, vim):
