@@ -79,6 +79,14 @@ class DropdownForm(object):
 			for line_number in range(0, len(vim.current.buffer)):
 				vim.command("syntax region eui_line_%s start=/\%%%dl/ end=/\%%%dl/" % (self.fg_colors[line_number%len(self.fg_colors)], line_number+1, line_number+2))
 
+	class ClickableLine(object):
+		def __init__(self, keys, handler):
+			self.keys = keys
+			self.handler = handler
+		def update_property(self, vim):
+			for key in self.keys:
+				vim.map_local(key, ":call EUIClickableLineHandeler('%s', '%s')<cr>" % (key, self.handler))
+
 	class DisableEdit(object):
 		def update_property(self, vim):
 			vim.set_local('nomodifiable')

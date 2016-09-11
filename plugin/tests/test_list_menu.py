@@ -7,6 +7,7 @@ class TestListMenu(TestWithFakeVim):
 
 	@patch("plugin.widgets.dropdown_form.DropdownForm.CloseAndFocusBack.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.DisableEdit.__init__")
+	@patch("plugin.widgets.dropdown_form.DropdownForm.ClickableLine.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.RowColumnContent.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.ColorRow.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.LineHighlight.__init__")
@@ -18,6 +19,7 @@ class TestListMenu(TestWithFakeVim):
 			line_highlight_init,
 			color_row_init,
 			row_column_content_init,
+			clickable_line_init,
 			disable_edit_init,
 			close_and_focus_back_init):
 		open_show_init.return_value = None
@@ -25,15 +27,17 @@ class TestListMenu(TestWithFakeVim):
 		line_highlight_init.return_value = None
 		color_row_init.return_value = None
 		row_column_content_init.return_value = None
+		clickable_line_init.return_value = None
 		disable_edit_init.return_value = None
 		close_and_focus_back_init.return_value = None
 
-		ListMenu(self.vim, title='title', height=10, lines=[['a'], ['b']], colors=['red', 'yellow'])
+		ListMenu(self.vim, title='title', height=10, lines=[['a'], ['b']], colors=['red', 'yellow'], keys=['c'], handler_name='list_clicked')
 
 		open_show_init.assert_called_with(DropdownForm.Position.Bottom, 10, 'title')
 		normal_form_init.assert_called_with()
 		line_highlight_init.assert_called_with()
 		color_row_init.assert_called_with(['red', 'yellow'])
 		row_column_content_init.assert_called_with(['a'], ['b'])
+		clickable_line_init.assert_called_with(['c'], 'list_clicked')
 		disable_edit_init.assert_called_with()
 		close_and_focus_back_init.assert_called_with(1, '<C-C>')

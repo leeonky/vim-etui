@@ -1,8 +1,8 @@
 import types
 
 class VimExtend:
-	@staticmethod
 
+	@staticmethod
 	def extend(vim):
 		def set_local(self, value):
 			vim.command('setlocal ' + value)
