@@ -8,7 +8,7 @@ class ListMenu(DropdownForm):
 			DropdownForm.RowColumnContent(*lines),
 			DropdownForm.DisableEdit(),
 			DropdownForm.LineHighlight(),
-			DropdownForm.ClickableLine(keys, handler_name),
+			DropdownForm.ClickableRow(keys, handler_name),
 			DropdownForm.ColorRow(colors),
 			DropdownForm.CloseAndFocusBack(vim.current.window.number, '<C-C>'))
 

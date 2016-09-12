@@ -166,17 +166,18 @@ class TestDisableEdit(TestWithFakeVim):
 
 		self.vim.set_local.assert_called_with('nomodifiable')
 
-class TestClickableLine(TestWithFakeVim):
+class TestClickableRow(TestWithFakeVim):
 
 	def test_should_set_map_with_inter(self):
 		handler_name = 'list_clicked'
-		prop = DropdownForm.ClickableLine(['o', 's'], handler_name)
+		prop = DropdownForm.ClickableRow(['o', 's'], handler_name)
 
 		prop.update_property(self.vim)
 
-		self.vim.map_local.assert_any_call('o', ":call EUIClickableLineHandeler('o', '%s')<cr>" % handler_name)
-		self.vim.map_local.assert_any_call('s', ":call EUIClickableLineHandeler('s', '%s')<cr>" % handler_name)
+		self.vim.map_local.assert_any_call('o', ":call EUIClickableRowHandeler('o', '%s')<cr>" % handler_name)
+		self.vim.map_local.assert_any_call('s', ":call EUIClickableRowHandeler('s', '%s')<cr>" % handler_name)
 
+# class TestNavigateableRow(
 
 class TestCloseAndFocusBack(TestWithFakeVim):
 
