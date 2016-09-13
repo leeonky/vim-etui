@@ -177,7 +177,42 @@ class TestClickableRow(TestWithFakeVim):
 		self.vim.map_local.assert_any_call('o', ":call EUIClickableRowHandeler('o', '%s')<cr>" % handler_name)
 		self.vim.map_local.assert_any_call('s', ":call EUIClickableRowHandeler('s', '%s')<cr>" % handler_name)
 
-# class TestNavigateableRow(
+class TestNavigateableRow(TestWithFakeVim):
+
+	def test_should_add_navigator_at_the_start_of_each_line(self):
+		prop = DropdownForm.NavigateableRow()
+		self.vim.current.buffer[:] = ['x1', 'x2']
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(self.vim.current.buffer[:], ['a  x1', 'b  x2'])
+
+	def test_line_number_more_than_26(self):
+		prop = DropdownForm.NavigateableRow()
+		self.vim.current.buffer[:] = map(lambda n: str(n), range(0, 27))
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(self.vim.current.buffer[0:2], ['aa  0', 'ab  1'])
+
+	def test_should_high_light_navigator(self):
+		prop = DropdownForm.NavigateableRow()
+		self.vim.current.buffer[:] = []
+
+		prop.update_property(self.vim)
+
+		self.vim.command.assert_any_call('highlight eui_navigator_highlight ctermfg=1 guifg=1')
+		self.vim.command.assert_any_call('syntax match eui_navigator_highlight "^[a-z]\+ "')
+
+	def test_should_map_navigator(self):
+		prop = DropdownForm.NavigateableRow()
+		self.vim.current.buffer[:] = map(lambda n: str(n), range(0, 27))
+
+		prop.update_property(self.vim)
+
+		self.vim.map_local.assert_any_call('<leader><leader>aa', '1G')
+		self.vim.map_local.assert_any_call('<leader><leader>ab', '2G')
+		self.vim.map_local.assert_any_call('<leader><leader>ba', '27G')
 
 class TestCloseAndFocusBack(TestWithFakeVim):
 

@@ -7,6 +7,7 @@ class TestListMenu(TestWithFakeVim):
 
 	@patch("plugin.widgets.dropdown_form.DropdownForm.CloseAndFocusBack.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.DisableEdit.__init__")
+	@patch("plugin.widgets.dropdown_form.DropdownForm.NavigateableRow.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.ClickableRow.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.RowColumnContent.__init__")
 	@patch("plugin.widgets.dropdown_form.DropdownForm.ColorRow.__init__")
@@ -20,6 +21,7 @@ class TestListMenu(TestWithFakeVim):
 			color_row_init,
 			row_column_content_init,
 			clickable_row_init,
+			navigateable_row_init,
 			disable_edit_init,
 			close_and_focus_back_init):
 		open_show_init.return_value = None
@@ -28,6 +30,7 @@ class TestListMenu(TestWithFakeVim):
 		color_row_init.return_value = None
 		row_column_content_init.return_value = None
 		clickable_row_init.return_value = None
+		navigateable_row_init.return_value = None
 		disable_edit_init.return_value = None
 		close_and_focus_back_init.return_value = None
 
@@ -39,5 +42,6 @@ class TestListMenu(TestWithFakeVim):
 		color_row_init.assert_called_with(['red', 'yellow'])
 		row_column_content_init.assert_called_with(['a'], ['b'])
 		clickable_row_init.assert_called_with(['c'], 'list_clicked')
+		navigateable_row_init.assert_called_with()
 		disable_edit_init.assert_called_with()
 		close_and_focus_back_init.assert_called_with(1, '<C-C>')

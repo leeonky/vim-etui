@@ -1,3 +1,6 @@
+from libs.extended_int import ExtendedInt
+import math
+
 class DropdownForm(object):
 	def __init__(self, vim, *properties):
 		self.vim = vim
@@ -90,6 +93,18 @@ class DropdownForm(object):
 	class DisableEdit(object):
 		def update_property(self, vim):
 			vim.set_local('nomodifiable')
+
+	class NavigateableRow(object):
+		def update_property(self, vim):
+			vim.command('highlight eui_navigator_highlight ctermfg=1 guifg=1')
+			vim.command('syntax match eui_navigator_highlight "^[a-z]\+ "')
+			line_count = len(vim.current.buffer)
+			if line_count>0:
+				navigation_width = math.ceil(math.log(line_count, 26))
+				for line_number in range(0, line_count):
+					navigator = (("%%%ds" % navigation_width) % ExtendedInt(line_number).to_alphabet()).replace(' ', 'a')
+					vim.current.buffer[line_number] = navigator + '  ' + vim.current.buffer[line_number]
+					vim.map_local('<leader><leader>%s' % navigator, '%dG' % (line_number+1))
 
 	class CloseAndFocusBack(object):
 		def __init__(self, old_window_number, key, *keys):
