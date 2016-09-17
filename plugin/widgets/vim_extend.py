@@ -27,4 +27,19 @@ class VimExtend:
 			return int(vim.eval("bufwinnr('^%s$')" % (title)))
 
 		vim.window_number_of_buffer = types.MethodType(window_number_of_buffer, vim)
+
+		def high_light(self, light):
+			vim.command('highlight %s %s' % (light.name(), light.properties()))
+		vim.high_light = types.MethodType(high_light, vim)
+
+		def syntax_region(self, light, **args):
+			if 'line' in args:
+				line = args['line']
+				vim.command("syntax region %s start=/\%%%dl/ end=/\%%%dl/" % (light.name(), line, line+1))
+			if 'start' in args and 'end' in args:
+				start = args['start']
+				end = args['end']
+				vim.command("syntax region %s start=/\%%%dl\%%%dc/ end=/\%%%dl\%%%dc/" % (light.name(), start[0], start[1], end[0], end[1]))
+		vim.syntax_region = types.MethodType(syntax_region, vim)
+
 		return vim

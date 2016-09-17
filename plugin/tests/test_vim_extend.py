@@ -3,6 +3,7 @@ from mock import MagicMock
 from plugin.tests.fake_vim import TestWithFakeVim
 from plugin.tests.fake_vim import FakeVim
 from plugin.widgets.vim_extend import VimExtend
+from plugin.widgets.high_light import HighLight
 
 class TestVimExtend(unittest.TestCase):
 
@@ -40,4 +41,23 @@ class TestVimExtend(unittest.TestCase):
 
 		self.assertEqual(1, self.vim.window_number_of_buffer('hello'))
 
+	def test_extend_high_light(self):
+		light = HighLight(styles=[HighLight.Bold])
 
+		self.vim.high_light(light)
+
+		self.vim.command.assert_called_with('highlight etui_hl_bold cterm=bold')
+
+	def test_extend_syntax_region_with_whole_line(self):
+		light = HighLight(styles=[HighLight.Bold])
+
+		self.vim.syntax_region(light, line=1)
+
+		self.vim.command.assert_called_with('syntax region etui_hl_bold start=/\%1l/ end=/\%2l/')
+
+	def test_extend_syntax_region_with_whole_line(self):
+		light = HighLight(styles=[HighLight.Bold])
+
+		self.vim.syntax_region(light, start=(1,2), end=(3,4))
+
+		self.vim.command.assert_called_with('syntax region etui_hl_bold start=/\%1l\%2c/ end=/\%3l\%4c/')

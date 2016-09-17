@@ -18,11 +18,13 @@ class HighLight(object):
 		return self.name
 
 	def properties(self):
-		properties = []
-		if self.fg:
-			properties.append('ctermfg=%s guifg=%s' % (self.fg, self.fg))
-		if self.bg:
-			properties.append('ctermbg=%s guibg=%s' % (self.bg, self.bg))
-		if len(self.styles)>0:
-			properties.append('cterm=%s' % ','.join(self.styles))
-		return ' '.join(properties)
+		if self.properties is not None:
+			properties = []
+			if self.fg:
+				properties.append('ctermfg=%s guifg=%s' % (self.fg, self.fg))
+			if self.bg:
+				properties.append('ctermbg=%s guibg=%s' % (self.bg, self.bg))
+			if len(self.styles)>0:
+				properties.append('cterm=%s' % ','.join(self.styles))
+			self.properties = ' '.join(properties)
+		return self.properties
