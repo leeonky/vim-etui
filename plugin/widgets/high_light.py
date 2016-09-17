@@ -3,22 +3,24 @@ class HighLight(object):
 	UnderLine = 'underline'
 	Inverse = 'inverse'
 	def __init__(self, fg=None, bg=None, styles=[]):
-		self.fg=fg
-		self.bg=bg
+		self._name = None
+		self._properties = None
+		self.fg = fg
+		self.bg = bg
 		self.styles = sorted(styles)
 
 	def name(self):
-		if self.name is not None:
+		if self._name is None:
 			sub_names = []
 			if self.fg:
 				sub_names.append('fg%s' % self.fg)
 			if self.bg:
 				sub_names.append('bg%s' % self.bg)
-			self.name = 'etui_hl_' + '_'.join(sub_names + self.styles)
-		return self.name
+			self._name = 'etui_hl_' + '_'.join(sub_names + self.styles)
+		return self._name
 
 	def properties(self):
-		if self.properties is not None:
+		if self._properties is None:
 			properties = []
 			if self.fg:
 				properties.append('ctermfg=%s guifg=%s' % (self.fg, self.fg))
@@ -26,5 +28,5 @@ class HighLight(object):
 				properties.append('ctermbg=%s guibg=%s' % (self.bg, self.bg))
 			if len(self.styles)>0:
 				properties.append('cterm=%s' % ','.join(self.styles))
-			self.properties = ' '.join(properties)
-		return self.properties
+			self._properties = ' '.join(properties)
+		return self._properties

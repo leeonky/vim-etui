@@ -51,7 +51,7 @@ class TestVimExtend(unittest.TestCase):
 	def test_extend_syntax_region_with_whole_line(self):
 		light = HighLight(styles=[HighLight.Bold])
 
-		self.vim.syntax_region(light, line=1)
+		self.vim.syntax_region(light, row=1)
 
 		self.vim.command.assert_called_with('syntax region etui_hl_bold start=/\%1l/ end=/\%2l/')
 

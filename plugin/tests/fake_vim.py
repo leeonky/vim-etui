@@ -1,4 +1,5 @@
 from mock import MagicMock
+from plugin.widgets.vim_extend  import VimExtend
 import unittest
 
 class FakeWindow:
@@ -31,6 +32,7 @@ class FakeExtend:
 
 	@staticmethod
 	def extend(vim):
+		vim = VimExtend.extend(vim)
 		vim.set_local = MagicMock()
 		vim.map_local = MagicMock()
 		vim.map_many_local = MagicMock()

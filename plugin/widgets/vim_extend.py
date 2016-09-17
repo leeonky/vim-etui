@@ -33,9 +33,9 @@ class VimExtend:
 		vim.high_light = types.MethodType(high_light, vim)
 
 		def syntax_region(self, light, **args):
-			if 'line' in args:
-				line = args['line']
-				vim.command("syntax region %s start=/\%%%dl/ end=/\%%%dl/" % (light.name(), line, line+1))
+			if 'row' in args:
+				row = args['row']
+				vim.command("syntax region %s start=/\%%%dl/ end=/\%%%dl/" % (light.name(), row, row+1))
 			if 'start' in args and 'end' in args:
 				start = args['start']
 				end = args['end']
