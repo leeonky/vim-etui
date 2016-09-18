@@ -30,3 +30,6 @@ class HighLight(object):
 				properties.append('cterm=%s' % ','.join(self.styles))
 			self._properties = ' '.join(properties)
 		return self._properties
+	
+	def change_to(self, fg=None, bg=None, styles=[]):
+		return HighLight(fg=fg or self.fg, bg=bg or self.bg, styles=styles or self.styles)
