@@ -32,6 +32,8 @@ class DropdownForm(object):
 	class Position(object):
 		Bottom = ('botright', 'new')
 		Right = ('botright', 'vnew')
+		Top = ('topleft', 'new')
+		Left = ('topleft', 'vnew')
 
 	class NormalForm(object):
 		def update_property(self, vim):

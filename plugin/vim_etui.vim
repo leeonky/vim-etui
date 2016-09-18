@@ -7,7 +7,7 @@ python sys.path.append(vim.eval('expand("<sfile>:h")'))
 python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets')
 
 " --------------------------------
-"  Function(s)
+" MessageBox
 " --------------------------------
 function! EUIMessage(content, title)
 python << endOfPython
@@ -21,6 +21,11 @@ MessageBox(VimExtend.extend(vim), message=vim.eval('a:content'), title=vim.eval(
 endOfPython
 endfunction
 
+command! -nargs=* EUIMessage call EUIMessage(<f-args>)
+
+" --------------------------------
+" ListMenu
+" --------------------------------
 function! EUIListMenu(title, lines, colors, keys, handler_name)
 python << endOfPython
 import vim
@@ -37,11 +42,6 @@ function! EUIClickableLineHandeler(key, handler_name)
 	let Handler = function(a:handler_name)
 	call call(Handler, [a:key, getline('.')])
 endfunction
-
-" --------------------------------
-"  Expose our commands to the user
-" --------------------------------
-command! -nargs=* EUIMessage call EUIMessage(<f-args>)
 
 " TEST ing
 function! TestListMenu()
