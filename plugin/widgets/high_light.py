@@ -33,3 +33,9 @@ class HighLight(object):
 	
 	def change_to(self, fg=None, bg=None, styles=[]):
 		return HighLight(fg=fg or self.fg, bg=bg or self.bg, styles=styles or self.styles)
+
+	def none_high_light(self):
+		return self.fg is None and self.bg is None and self.styles==[]
+
+	def change_to_reset(self):
+		return HighLight();

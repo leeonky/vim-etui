@@ -35,7 +35,19 @@ class TestHighLight(TestWithFakeVim):
 	def test_change_to_with_default_properties(self):
 		light = HighLight(styles=[HighLight.Bold]) 
 
-		light = light.change_to(fg='2')
+		light = light.change_to(bg='2')
 
-		self.assertEqual(light.name(), 'etui_hl_fg2_bold')
-		self.assertEqual(light.properties(), 'ctermfg=2 guifg=2 cterm=bold')
+		self.assertEqual(light.name(), 'etui_hl_bg2_bold')
+		self.assertEqual(light.properties(), 'ctermbg=2 guibg=2 cterm=bold')
+
+	def test_reset_high_light(self):
+		light = HighLight(styles=[HighLight.Bold])
+
+		self.assertFalse(light.none_high_light())
+
+	def test_reset_high_light(self):
+		light = HighLight(styles=[HighLight.Bold])
+
+		light = light.change_to_reset()
+
+		self.assertTrue(light.none_high_light())

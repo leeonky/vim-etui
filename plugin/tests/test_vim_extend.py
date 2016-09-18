@@ -48,6 +48,13 @@ class TestVimExtend(unittest.TestCase):
 
 		self.vim.command.assert_called_with('highlight etui_hl_bold cterm=bold')
 
+	def test_extend_none_high_light(self):
+		light = HighLight()
+
+		self.vim.high_light(light)
+
+		self.assertEqual(self.vim.command.call_args_list, [])
+
 	def test_extend_syntax_region_with_whole_line(self):
 		light = HighLight(styles=[HighLight.Bold])
 
@@ -61,3 +68,10 @@ class TestVimExtend(unittest.TestCase):
 		self.vim.syntax_region(light, start=(1,2), end=(3,4))
 
 		self.vim.command.assert_called_with('syntax region etui_hl_bold start=/\%1l\%2c/ end=/\%3l\%4c/')
+
+	def test_extend_syntax_region_with_none_high_light(self):
+		light = HighLight()
+
+		self.vim.syntax_region(light, row=1)
+
+		self.assertEqual(self.vim.command.call_args_list, [])

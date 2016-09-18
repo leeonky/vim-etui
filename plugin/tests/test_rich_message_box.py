@@ -27,11 +27,33 @@ class TestRichMessageBox(TestWithFakeVim):
 
 		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
 
-	# def test_append_one_line_with_high_light(self):
-		# box = RichMessageBox(self.vim, title='title')
+	def test_append_one_line_with_high_light(self):
+		box = RichMessageBox(self.vim, title='title')
 
-		# box.append_rich("\033[30mHello\033[0m")
+		box.append_rich("\033[30mHello\033[0m")
 
-		# self.assertEqual(self.vim.current.buffer[:], ['Hello'])
-		# self.vim.command.assert_any_call('highlight etui_hl_fg0 ctermfg=0 guifg=0')
-		# self.vim.command.assert_any_call('syntax region etui_hl_fg0 start=/\%1l\%1c/ end=/\%1l\%6c/')
+		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
+		self.vim.command.assert_any_call('highlight etui_hl_fg0 ctermfg=0 guifg=0')
+		self.vim.command.assert_any_call('syntax region etui_hl_fg0 start=/\%1l\%1c/ end=/\%1l\%6c/')
+
+	def test_append_one_line_with_two_high_lights(self):
+		box = RichMessageBox(self.vim, title='title')
+
+		box.append_rich("\033[30mHello\033[0m\033[31mHello\033[0m")
+
+		self.assertEqual(self.vim.current.buffer[:], ['HelloHello'])
+		self.vim.command.assert_any_call('highlight etui_hl_fg0 ctermfg=0 guifg=0')
+		self.vim.command.assert_any_call('syntax region etui_hl_fg0 start=/\%1l\%1c/ end=/\%1l\%6c/')
+		self.vim.command.assert_any_call('highlight etui_hl_fg1 ctermfg=1 guifg=1')
+		self.vim.command.assert_any_call('syntax region etui_hl_fg1 start=/\%1l\%6c/ end=/\%1l\%11c/')
+
+	def test_append_one_line_with_change_high_light(self):
+		box = RichMessageBox(self.vim, title='title')
+
+		box.append_rich("\033[30mHello\033[40mHello\033[0m\033[0m")
+
+		self.assertEqual(self.vim.current.buffer[:], ['HelloHello'])
+		self.vim.command.assert_any_call('highlight etui_hl_fg0 ctermfg=0 guifg=0')
+		self.vim.command.assert_any_call('syntax region etui_hl_fg0 start=/\%1l\%1c/ end=/\%1l\%6c/')
+		self.vim.command.assert_any_call('highlight etui_hl_fg0_bg0 ctermfg=0 guifg=0 ctermbg=0 guibg=0')
+		self.vim.command.assert_any_call('syntax region etui_hl_fg0_bg0 start=/\%1l\%6c/ end=/\%1l\%11c/')
