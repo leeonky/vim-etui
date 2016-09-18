@@ -17,6 +17,7 @@ class TestMessageBox(TestWithFakeVim):
 		text_content_init.return_value = None
 		disable_edit_init.return_value = None
 		close_and_focus_back_init.return_value = None
+		self.vim.vars = {'message_box_exit_key': ['<CR>', '<C-C>']}
 
 		MessageBox(self.vim, title='title', message='message', height=10)
 

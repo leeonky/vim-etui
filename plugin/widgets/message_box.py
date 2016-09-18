@@ -7,5 +7,5 @@ class MessageBox(DropdownForm):
 			DropdownForm.NormalForm(),
 			DropdownForm.TextContent(message),
 			DropdownForm.DisableEdit(),
-			DropdownForm.CloseAndFocusBack(vim.current.window.number, '<CR>', '<C-C>'))
+			DropdownForm.CloseAndFocusBack(vim.current.window.number, *vim.vars['message_box_exit_key']))
 

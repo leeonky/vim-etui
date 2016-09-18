@@ -11,5 +11,5 @@ class ListMenu(DropdownForm):
 			DropdownForm.ColorRow(colors),
 			DropdownForm.NavigateableRow(),
 			DropdownForm.DisableEdit(),
-			DropdownForm.CloseAndFocusBack(vim.current.window.number, '<C-C>'))
+			DropdownForm.CloseAndFocusBack(vim.current.window.number, *vim.vars['list_menu_exit_key']))
 

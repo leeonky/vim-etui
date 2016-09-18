@@ -43,6 +43,13 @@ function! EUIClickableLineHandeler(key, handler_name)
 	call call(Handler, [a:key, getline('.')])
 endfunction
 
+" ----------------------------
+" default config
+" ----------------------------
+let g:message_box_exit_key = ['<CR>', '<C-C>']
+let g:list_menu_exit_key = ['<C-C>']
+
+"================================================================================
 " TEST ing
 function! TestListMenu()
 	call EUIListMenu('Hello', [['A', 'B'], ['00', '01'], ['aoeuoeau']], ['green', 'yellow'], ['e'], 'Print_key_line')
