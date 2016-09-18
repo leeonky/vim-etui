@@ -39,3 +39,9 @@ class HighLight(object):
 
 	def change_to_reset(self):
 		return HighLight();
+
+	def add_styles(self, *styles):
+		return self.change_to(styles=sorted(set(self.styles + list(styles))))
+
+	def remove_styles(self, *styles):
+		return self.change_to(styles=sorted(set(self.styles) - set(styles)))
