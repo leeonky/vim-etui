@@ -9,7 +9,7 @@ python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets')
 " --------------------------------
 "  Function(s)
 " --------------------------------
-function! EUIMessage(title, content)
+function! EUIMessage(content, title)
 python << endOfPython
 import vim
 

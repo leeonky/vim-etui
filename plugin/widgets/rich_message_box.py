@@ -5,9 +5,9 @@ import re
 class RichMessageBox(DropdownForm):
 	ansi_regex = r"\033\[(\d+(;\d+)*)m"
 
-	def __init__(self, vim, title='', height=10):
+	def __init__(self, vim, title='', height=10, open_style=None):
 		super(RichMessageBox, self).__init__(vim,
-			DropdownForm.OpenShow(DropdownForm.Position.Bottom, 10, title),
+			open_style or DropdownForm.OpenShow(DropdownForm.Position.Bottom, 10, title),
 			DropdownForm.NormalForm(),
 			DropdownForm.DisableEdit())
 		self.vim = vim

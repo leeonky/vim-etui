@@ -1,9 +1,9 @@
 from dropdown_form import DropdownForm
 
 class ListMenu(DropdownForm):
-	def __init__(self, vim, title, lines, colors=[], height=10, keys=[], handler_name=''):
+	def __init__(self, vim, lines=[], colors=[], title='', height=10, keys=[], handler_name='', open_style=None):
 		super(ListMenu, self).__init__(vim,
-			DropdownForm.OpenShow(DropdownForm.Position.Bottom, 10, title),
+			open_style or DropdownForm.OpenShow(DropdownForm.Position.Bottom, 10, title),
 			DropdownForm.NormalForm(),
 			DropdownForm.RowColumnContent(*lines),
 			DropdownForm.LineHighlight(),
