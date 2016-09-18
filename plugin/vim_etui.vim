@@ -38,6 +38,11 @@ function! EUIClickableLineHandeler(key, handler_name)
 	call call(Handler, [a:key, getline('.')])
 endfunction
 
+" --------------------------------
+"  Expose our commands to the user
+" --------------------------------
+command! -nargs=* EUIMessage call EUIMessage(<f-args>)
+
 " TEST ing
 function! TestListMenu()
 	call EUIListMenu('Hello', [['A', 'B'], ['00', '01'], ['aoeuoeau']], ['green', 'yellow'], ['e'], 'Print_key_line')
@@ -50,7 +55,17 @@ endfunction
 
 command! -nargs=* ETestLM call TestListMenu(<f-args>)
 
-" --------------------------------
-"  Expose our commands to the user
-" --------------------------------
-command! -nargs=* EUIMessage call EUIMessage(<f-args>)
+function! TestRichBox(file)
+python << endOfPython
+import vim
+from vim_extend  import VimExtend
+from rich_message_box import RichMessageBox
+
+rich_message_box = RichMessageBox(VimExtend.extend(vim), title='Test')
+rich_message_box.show()
+with open(vim.eval('a:file')) as f:
+    for line in f:
+		rich_message_box.append_rich(line)
+
+endOfPython
+endfunction

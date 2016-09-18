@@ -1,5 +1,5 @@
 from dropdown_form import DropdownForm
-from plugin.widgets.high_light import HighLight
+from high_light import HighLight
 import re
 
 class RichMessageBox(DropdownForm):
@@ -15,6 +15,7 @@ class RichMessageBox(DropdownForm):
 		self.last_position = None
 
 	def append_rich(self, row):
+		self.vim.set_local('modifiable')
 		row_index = len(self.vim.current.buffer)+1
 
 		match = re.search(RichMessageBox.ansi_regex, row)
@@ -24,6 +25,7 @@ class RichMessageBox(DropdownForm):
 			match = re.search(RichMessageBox.ansi_regex, row)
 
 		self.vim.current.buffer.append(row)
+		self.vim.set_local('nomodifiable')
 
 	def _process_ansi_match(self, ansi_code, row, col):
 		def process_ansi_code(ansi_code):
@@ -49,7 +51,6 @@ class RichMessageBox(DropdownForm):
 				self.last_high_light = self.last_high_light.remove_styles('inverse')
 			elif ansi_code == 0:
 				self.last_high_light = self.last_high_light.change_to_reset()
-				self.last_position = None
 
 		if self.last_position != (row, col):
 			self.vim.high_light(self.last_high_light)
