@@ -81,3 +81,25 @@ class TestRichMessageBox(TestWithFakeVim):
 		self.assertEqual(self.vim.command.call_args_list, [
 			call('highlight etui_hl_fg8_bg8 ctermfg=8 guifg=8 ctermbg=8 guibg=8'),
 			call('syntax region etui_hl_fg8_bg8 start=/\%1l\%1c/ end=/\%1l\%6c/')])
+
+	def test_append_one_line_with_styles(self):
+		box = RichMessageBox(self.vim, title='title')
+
+		box.append_rich("\033[1m\033[4m\033[7mHello\033[21m\033[24m\033[27m\033[30mHello\033[0m\033[0m")
+
+		self.assertEqual(self.vim.current.buffer[:], ['HelloHello'])
+		self.assertEqual(self.vim.command.call_args_list, [
+			call('highlight etui_hl_bold_inverse_underline cterm=bold,inverse,underline'),
+			call('syntax region etui_hl_bold_inverse_underline start=/\%1l\%1c/ end=/\%1l\%6c/'),
+			call('highlight etui_hl_fg0 ctermfg=0 guifg=0'),
+			call('syntax region etui_hl_fg0 start=/\%1l\%6c/ end=/\%1l\%11c/')])
+
+	def test_append_one_line_with_multi_high_light_in_one_ansi_code(self):
+		box = RichMessageBox(self.vim, title='title')
+
+		box.append_rich("\033[1;4;7mHello\033[0m")
+
+		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
+		self.assertEqual(self.vim.command.call_args_list, [
+			call('highlight etui_hl_bold_inverse_underline cterm=bold,inverse,underline'),
+			call('syntax region etui_hl_bold_inverse_underline start=/\%1l\%1c/ end=/\%1l\%6c/')])

@@ -49,12 +49,12 @@ class TestHighLight(TestWithFakeVim):
 		self.assertEqual(light.properties(), 'cterm=bold,inverse,underline')
 
 	def test_remove_styles(self):
-		light = HighLight(styles=[HighLight.Bold, HighLight.Inverse])
+		light = HighLight(styles=[HighLight.Bold, HighLight.Inverse, HighLight.UnderLine])
 
-		light = light.remove_styles('bold', 'underline')
+		light = light.remove_styles('bold', 'underline', 'inverse')
 
-		self.assertEqual(light.name(), 'etui_hl_inverse')
-		self.assertEqual(light.properties(), 'cterm=inverse')
+		self.assertEqual(light.name(), 'etui_hl_')
+		self.assertEqual(light.properties(), '')
 
 	def test_reset_high_light(self):
 		light = HighLight(styles=[HighLight.Bold])
