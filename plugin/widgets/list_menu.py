@@ -1,9 +1,9 @@
 from dropdown_form import DropdownForm
 
 class ListMenu(DropdownForm):
-	def __init__(self, vim, lines=[], colors=[], title='', height=10, keys=[], handler_name='', open_style=None):
+	def __init__(self, vim, lines=[], colors=[], title='', height=10, open_where=DropdownForm.Position.Bottom, keys=[], handler_name='', close_keys=[]):
 		super(ListMenu, self).__init__(vim,
-			open_style or DropdownForm.OpenShow(DropdownForm.Position.Bottom, 10, title),
+			DropdownForm.OpenShow(DropdownForm.Position.Bottom, 11, title),
 			DropdownForm.NormalForm(),
 			DropdownForm.RowColumnContent(*lines),
 			DropdownForm.LineHighlight(),
@@ -11,5 +11,5 @@ class ListMenu(DropdownForm):
 			DropdownForm.ColorRow(colors),
 			DropdownForm.NavigateableRow(),
 			DropdownForm.DisableEdit(),
-			DropdownForm.CloseAndFocusBack(vim.current.window.number, *vim.vars['list_menu_exit_key']))
+			DropdownForm.CloseAndFocusBack(vim.current.window.number, *close_keys))
 

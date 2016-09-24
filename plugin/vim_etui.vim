@@ -28,6 +28,20 @@ class ETUI(object):
 			options.setdefault('close_keys', ETUI.MessageBox.DEFAULT_EXIT_KEYS)
 			super(ETUI.MessageBox, self).__init__(ETUI.vim(), **options)
 
+	class ListMenu(list_menu.ListMenu):
+		DEFAULT_EXIT_KEYS = ['<C-C>']
+		DEFAULT_HEIGHT = 15
+		def __init__(self, **options):
+			options.setdefault('lines', [])
+			options.setdefault('colors', [])
+			options.setdefault('title', '')
+			options.setdefault('height', ETUI.ListMenu.DEFAULT_HEIGHT)
+			options.setdefault('open_where', ETUI.DropdownForm.Position.Bottom)
+			options.setdefault('keys', [])
+			options.setdefault('handler_name', '')
+			options.setdefault('close_keys', ETUI.ListMenu.DEFAULT_EXIT_KEYS)
+			super(ETUI.ListMenu, self).__init__(ETUI.vim(), **options)
+
 	@staticmethod
 	def vim():
 		return VimExtend.extend(vim)
@@ -35,33 +49,12 @@ class ETUI(object):
 endOfPython
 
 " --------------------------------
-" MessageBox
-" --------------------------------
-function! EUIMessage(content, title)
-python << endOfPython
-import vim
-
-from message_box import MessageBox
-from vim_extend  import VimExtend
-
-MessageBox(VimExtend.extend(vim), message=vim.eval('a:content'), title=vim.eval('a:title')).show()
-
-endOfPython
-endfunction
-
-command! -nargs=* EUIMessage call EUIMessage(<f-args>)
-
-" --------------------------------
 " ListMenu
 " --------------------------------
 function! EUIListMenu(title, lines, colors, keys, handler_name)
 python << endOfPython
-import vim
 
-from list_menu import ListMenu
-from vim_extend  import VimExtend
-
-ListMenu(VimExtend.extend(vim), title=vim.eval('a:title'), lines=vim.eval('a:lines'), colors=vim.eval('a:colors'), keys=vim.eval('a:keys'), handler_name=vim.eval('a:handler_name')).show()
+ETUI.ListMenu(title=vim.eval('a:title'), lines=vim.eval('a:lines'), colors=vim.eval('a:colors'), keys=vim.eval('a:keys'), handler_name=vim.eval('a:handler_name')).show()
 
 endOfPython
 endfunction
@@ -70,11 +63,6 @@ function! EUIClickableLineHandeler(key, handler_name)
 	let Handler = function(a:handler_name)
 	call call(Handler, [a:key, getline('.')])
 endfunction
-
-" ----------------------------
-" default config
-" ----------------------------
-let g:list_menu_exit_key = ['<C-C>']
 
 "================================================================================
 " TEST ing

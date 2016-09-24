@@ -18,10 +18,10 @@ class TestMessageBox(TestWithFakeVim):
 		disable_edit_init.return_value = None
 		close_and_focus_back_init.return_value = None
 
-		MessageBox(self.vim, title='title', message='message', height=10, close_keys=['<CR>', '<C-C>'])
+		MessageBox(self.vim, title='title', message='message', height=11, close_keys=['<CR>', '<CC>'])
 
-		open_new_init.assert_called_with(DropdownForm.Position.Bottom, 10, 'title')
+		open_new_init.assert_called_with(DropdownForm.Position.Bottom, 11, 'title')
 		normal_form_init.assert_called_with()
 		text_content_init.assert_called_with('message')
 		disable_edit_init.assert_called_with()
-		close_and_focus_back_init.assert_called_with(1, '<CR>', '<C-C>')
+		close_and_focus_back_init.assert_called_with(1, '<CR>', '<CC>')

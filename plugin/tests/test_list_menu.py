@@ -33,11 +33,10 @@ class TestListMenu(TestWithFakeVim):
 		navigateable_row_init.return_value = None
 		disable_edit_init.return_value = None
 		close_and_focus_back_init.return_value = None
-		self.vim.vars = {'list_menu_exit_key': ['<C-C>']}
 
-		ListMenu(self.vim, title='title', height=10, lines=[['a'], ['b']], colors=['red', 'yellow'], keys=['c'], handler_name='list_clicked')
+		ListMenu(self.vim, title='title', height=11, lines=[['a'], ['b']], colors=['red', 'yellow'], keys=['c'], handler_name='list_clicked', close_keys=['cc'])
 
-		open_show_init.assert_called_with(DropdownForm.Position.Bottom, 10, 'title')
+		open_show_init.assert_called_with(DropdownForm.Position.Bottom, 11, 'title')
 		normal_form_init.assert_called_with()
 		line_highlight_init.assert_called_with()
 		color_row_init.assert_called_with(['red', 'yellow'])
@@ -45,4 +44,4 @@ class TestListMenu(TestWithFakeVim):
 		clickable_row_init.assert_called_with(['c'], 'list_clicked')
 		navigateable_row_init.assert_called_with()
 		disable_edit_init.assert_called_with()
-		close_and_focus_back_init.assert_called_with(1, '<C-C>')
+		close_and_focus_back_init.assert_called_with(1, 'cc')
