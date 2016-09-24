@@ -166,17 +166,6 @@ class TestDisableEdit(TestWithFakeVim):
 
 		self.vim.set_local.assert_called_with('nomodifiable')
 
-class TestClickableRow(TestWithFakeVim):
-
-	def test_should_set_map_with_inter(self):
-		handler_name = 'list_clicked'
-		prop = DropdownForm.ClickableRow(['o', 's'], handler_name)
-
-		prop.update_property(self.vim)
-
-		self.vim.map_local.assert_any_call('o', ":call EUIClickableRowHandeler('o', '%s')<cr>" % handler_name)
-		self.vim.map_local.assert_any_call('s', ":call EUIClickableRowHandeler('s', '%s')<cr>" % handler_name)
-
 class TestClickableBuffer(TestWithFakeVim):
 
 	def test_should_set_map_with_inter(self):
@@ -191,6 +180,16 @@ class TestClickableBuffer(TestWithFakeVim):
 		self.assertEqual(DropdownForm.ClickableBuffer.Handlers[instance_name], handler_test)
 		self.vim.map_local.assert_any_call('o', ":python %s.DropdownForm.ClickableBuffer.Handlers['%s']('o')<cr>" % (export_model, instance_name))
 		self.vim.map_local.assert_any_call('s', ":python %s.DropdownForm.ClickableBuffer.Handlers['%s']('s')<cr>" % (export_model, instance_name))
+
+	def test_create_with_none_handler(self):
+		DropdownForm.ClickableBuffer.Handlers = {}
+		prop = DropdownForm.ClickableBuffer(['o', 's'])
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(DropdownForm.ClickableBuffer.Handlers, {})
+		self.assertEqual(self.vim.map_local.call_args_list, [])
+
 
 class TestNavigateableRow(TestWithFakeVim):
 

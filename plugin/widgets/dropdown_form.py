@@ -84,25 +84,18 @@ class DropdownForm(object):
 			for line_number in range(0, len(vim.current.buffer)):
 				vim.command("syntax region eui_line_%s start=/\%%%dl/ end=/\%%%dl/" % (self.fg_colors[line_number%len(self.fg_colors)], line_number+1, line_number+2))
 
-	class ClickableRow(object):
-		def __init__(self, keys, handler):
-			self.keys = keys
-			self.handler = handler
-		def update_property(self, vim):
-			for key in self.keys:
-				vim.map_local(key, ":call EUIClickableRowHandeler('%s', '%s')<cr>" % (key, self.handler))
-
 	class ClickableBuffer(object):
 		Handlers = {}
-		def __init__(self, keys, export_model, instance_name, handler):
+		def __init__(self, keys=[], export_model='', instance_name='', handler=None):
 			self.export_model = export_model
 			self.instance_name = instance_name
 			self.keys = keys
 			self.handler = handler
 		def update_property(self, vim):
-			DropdownForm.ClickableBuffer.Handlers[self.instance_name] = self.handler
-			for key in self.keys:
-				vim.map_local(key, ":python %s.DropdownForm.ClickableBuffer.Handlers['%s']('%s')<cr>" % (self.export_model, self.instance_name, key))
+			if self.handler:
+				DropdownForm.ClickableBuffer.Handlers[self.instance_name] = self.handler
+				for key in self.keys:
+					vim.map_local(key, ":python %s.DropdownForm.ClickableBuffer.Handlers['%s']('%s')<cr>" % (self.export_model, self.instance_name, key))
 
 	class DisableEdit(object):
 		def update_property(self, vim):

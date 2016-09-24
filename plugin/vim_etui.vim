@@ -38,7 +38,7 @@ class ETUI(object):
 			options.setdefault('height', ETUI.ListMenu.DEFAULT_HEIGHT)
 			options.setdefault('open_where', ETUI.DropdownForm.Position.Bottom)
 			options.setdefault('keys', [])
-			options.setdefault('handler_name', '')
+			options.setdefault('export_model', 'ETUI')
 			options.setdefault('close_keys', ETUI.ListMenu.DEFAULT_EXIT_KEYS)
 			super(ETUI.ListMenu, self).__init__(ETUI.vim(), **options)
 
@@ -48,31 +48,28 @@ class ETUI(object):
 
 endOfPython
 
-" --------------------------------
-" ListMenu
-" --------------------------------
-function! EUIListMenu(title, lines, colors, keys, handler_name)
-python << endOfPython
 
-ETUI.ListMenu(title=vim.eval('a:title'), lines=vim.eval('a:lines'), colors=vim.eval('a:colors'), keys=vim.eval('a:keys'), handler_name=vim.eval('a:handler_name')).show()
 
-endOfPython
-endfunction
 
-function! EUIClickableLineHandeler(key, handler_name)
-	let Handler = function(a:handler_name)
-	call call(Handler, [a:key, getline('.')])
-endfunction
+
+
+
 
 "================================================================================
 " TEST ing
+function! EUIListMenu(title, lines, colors, keys, handler_name)
+python << endOfPython
+
+def test_show(key):
+	print key
+	print ETUI.vim().current_cursor()
+
+ETUI.ListMenu(title=vim.eval('a:title'), lines=vim.eval('a:lines'), colors=vim.eval('a:colors'), keys=vim.eval('a:keys'), handler=test_show).show()
+
+endOfPython
+endfunction
 function! TestListMenu()
 	call EUIListMenu('Hello', [['A', 'B'], ['00', '01'], ['aoeuoeau']], ['green', 'yellow'], ['e'], 'Print_key_line')
-endfunction
-
-function! Print_key_line(key, line)
-	echo a:key
-	echo a:line
 endfunction
 
 command! -nargs=* ETestLM call TestListMenu(<f-args>)
