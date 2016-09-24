@@ -44,4 +44,9 @@ class VimExtend:
 					vim.command("syntax region %s start=/\%%%dl\%%%dc/ end=/\%%%dl\%%%dc/" % (light.name(), start[0], start[1], end[0], end[1]))
 		vim.syntax_region = types.MethodType(syntax_region, vim)
 
+		def current_cursor(self):
+			return (int(vim.eval("line('.')")), int(vim.eval("col('.')")))
+		vim.current_cursor = types.MethodType(current_cursor, vim)
+
+
 		return vim

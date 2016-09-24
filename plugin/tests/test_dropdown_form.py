@@ -177,6 +177,21 @@ class TestClickableRow(TestWithFakeVim):
 		self.vim.map_local.assert_any_call('o', ":call EUIClickableRowHandeler('o', '%s')<cr>" % handler_name)
 		self.vim.map_local.assert_any_call('s', ":call EUIClickableRowHandeler('s', '%s')<cr>" % handler_name)
 
+class TestClickableBuffer(TestWithFakeVim):
+
+	def test_should_set_map_with_inter(self):
+		instance_name = 'test_inc'
+		export_model = 'export'
+		handler_test = MagicMock()
+		DropdownForm.ClickableBuffer.Handlers = {}
+		prop = DropdownForm.ClickableBuffer(['o', 's'], export_model, instance_name, handler_test)
+
+		prop.update_property(self.vim)
+
+		self.assertEqual(DropdownForm.ClickableBuffer.Handlers[instance_name], handler_test)
+		self.vim.map_local.assert_any_call('o', ":python %s.DropdownForm.ClickableBuffer.Handlers['%s']('o')<cr>" % (export_model, instance_name))
+		self.vim.map_local.assert_any_call('s', ":python %s.DropdownForm.ClickableBuffer.Handlers['%s']('s')<cr>" % (export_model, instance_name))
+
 class TestNavigateableRow(TestWithFakeVim):
 
 	def test_should_add_navigator_at_the_start_of_each_line(self):

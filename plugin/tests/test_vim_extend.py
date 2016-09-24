@@ -75,3 +75,13 @@ class TestVimExtend(unittest.TestCase):
 		self.vim.syntax_region(light, row=1)
 
 		self.assertEqual(self.vim.command.call_args_list, [])
+
+	def test_extend_current_postion(self):
+		def fake_command(cmd):
+			if cmd == "line('.')":
+				return '2'
+			if cmd == "col('.')":
+				return '4'
+		self.vim.eval = fake_command
+
+		self.assertEqual((2, 4), self.vim.current_cursor())

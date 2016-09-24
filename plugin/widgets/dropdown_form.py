@@ -92,6 +92,18 @@ class DropdownForm(object):
 			for key in self.keys:
 				vim.map_local(key, ":call EUIClickableRowHandeler('%s', '%s')<cr>" % (key, self.handler))
 
+	class ClickableBuffer(object):
+		Handlers = {}
+		def __init__(self, keys, export_model, instance_name, handler):
+			self.export_model = export_model
+			self.instance_name = instance_name
+			self.keys = keys
+			self.handler = handler
+		def update_property(self, vim):
+			DropdownForm.ClickableBuffer.Handlers[self.instance_name] = self.handler
+			for key in self.keys:
+				vim.map_local(key, ":python %s.DropdownForm.ClickableBuffer.Handlers['%s']('%s')<cr>" % (self.export_model, self.instance_name, key))
+
 	class DisableEdit(object):
 		def update_property(self, vim):
 			vim.set_local('nomodifiable')
