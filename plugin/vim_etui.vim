@@ -6,6 +6,34 @@ python import vim
 python sys.path.append(vim.eval('expand("<sfile>:h")'))
 python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets')
 
+python << endOfPython
+import vim
+from vim_extend  import VimExtend
+
+import message_box
+import list_menu
+import rich_message_box
+import dropdown_form
+
+class ETUI(object):
+	DropdownForm = rich_message_box.DropdownForm
+	class MessageBox(message_box.MessageBox):
+		DEFAULT_EXIT_KEYS = ['<CR>', '<C-C>']
+		DEFAULT_HEIGHT = 15
+		def __init__(self, **options):
+			options.setdefault('message', '')
+			options.setdefault('title', '')
+			options.setdefault('height', ETUI.MessageBox.DEFAULT_HEIGHT)
+			options.setdefault('open_where', ETUI.DropdownForm.Position.Bottom)
+			options.setdefault('close_keys', ETUI.MessageBox.DEFAULT_EXIT_KEYS)
+			super(ETUI.MessageBox, self).__init__(ETUI.vim(), **options)
+
+	@staticmethod
+	def vim():
+		return VimExtend.extend(vim)
+
+endOfPython
+
 " --------------------------------
 " MessageBox
 " --------------------------------
@@ -46,7 +74,6 @@ endfunction
 " ----------------------------
 " default config
 " ----------------------------
-let g:message_box_exit_key = ['<CR>', '<C-C>']
 let g:list_menu_exit_key = ['<C-C>']
 
 "================================================================================

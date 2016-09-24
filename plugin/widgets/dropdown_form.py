@@ -109,8 +109,8 @@ class DropdownForm(object):
 					vim.map_local('<leader><leader>%s' % navigator, '%dG' % (line_number+1))
 
 	class CloseAndFocusBack(object):
-		def __init__(self, old_window_number, key, *keys):
+		def __init__(self, old_window_number, *keys):
 			self.old_window_number = old_window_number
-			self.keys = [key] + list(keys)
+			self.keys = list(keys)
 		def update_property(self, vim):
 			vim.map_many_local(self.keys, ":q!<CR>:%dwincmd w<CR>" % self.old_window_number)

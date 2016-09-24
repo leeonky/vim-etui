@@ -17,9 +17,8 @@ class TestMessageBox(TestWithFakeVim):
 		text_content_init.return_value = None
 		disable_edit_init.return_value = None
 		close_and_focus_back_init.return_value = None
-		self.vim.vars = {'message_box_exit_key': ['<CR>', '<C-C>']}
 
-		MessageBox(self.vim, title='title', message='message', height=10)
+		MessageBox(self.vim, title='title', message='message', height=10, close_keys=['<CR>', '<C-C>'])
 
 		open_new_init.assert_called_with(DropdownForm.Position.Bottom, 10, 'title')
 		normal_form_init.assert_called_with()

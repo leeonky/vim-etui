@@ -1,11 +1,11 @@
 from dropdown_form import DropdownForm
 
 class MessageBox(DropdownForm):
-	def __init__(self, vim, message='', title='', height=10, open_style=None):
+	def __init__(self, vim, message='', title='', height=10, open_where=DropdownForm.Position.Bottom, close_keys=[]):
 		super(MessageBox, self).__init__(vim,
-			open_style or DropdownForm.OpenNew(DropdownForm.Position.Bottom, 10, title),
+			DropdownForm.OpenNew(open_where, height, title),
 			DropdownForm.NormalForm(),
 			DropdownForm.TextContent(message),
 			DropdownForm.DisableEdit(),
-			DropdownForm.CloseAndFocusBack(vim.current.window.number, *vim.vars['message_box_exit_key']))
+			DropdownForm.CloseAndFocusBack(vim.current.window.number, *close_keys))
 
