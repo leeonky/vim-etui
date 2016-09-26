@@ -45,6 +45,14 @@ class ETUI(object):
 			options.setdefault('close_keys', ETUI.ListMenu.DEFAULT_EXIT_KEYS)
 			super(ETUI.ListMenu, self).__init__(ETUI.vim(), **options)
 
+	class RichMessageBox(rich_message_box.RichMessageBox):
+		DEFAULT_HEIGHT = 15
+		def __init__(self, **options):
+			options.setdefault('title', '')
+			options.setdefault('height', ETUI.ListMenu.DEFAULT_HEIGHT)
+			options.setdefault('open_where', ETUI.DropdownForm.Position.Bottom)
+			super(ETUI.RichMessageBox, self).__init__(ETUI.vim(), **options)
+
 	@staticmethod
 	def vim():
 		return VimExtend.extend(vim)
@@ -79,11 +87,8 @@ command! -nargs=* ETestLM call TestListMenu(<f-args>)
 
 function! TestRichBox(file)
 python << endOfPython
-import vim
-from vim_extend  import VimExtend
-from rich_message_box import RichMessageBox
 
-rich_message_box = RichMessageBox(VimExtend.extend(vim), title='Test')
+rich_message_box = ETUI.RichMessageBox(title='Test')
 rich_message_box.show()
 with open(vim.eval('a:file')) as f:
     for line in f:
