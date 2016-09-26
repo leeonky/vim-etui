@@ -2,7 +2,7 @@ from mock import patch
 from mock import MagicMock
 from mock import call
 from plugin.widgets.dropdown_form import DropdownForm
-from plugin.tests.fake_vim import TestWithFakeVim
+from plugin.widgets.fake_vim import TestWithFakeVim
 
 class TestDropdownForm(TestWithFakeVim):
 

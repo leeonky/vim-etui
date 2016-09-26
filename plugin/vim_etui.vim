@@ -15,8 +15,10 @@ import list_menu
 import rich_message_box
 import dropdown_form
 import stateful_object
+import fake_vim
 
 class ETUI(object):
+	FakeVim = fake_vim.FakeVim
 	DropdownForm = rich_message_box.DropdownForm
 	StatefulObject = stateful_object.StatefulObject
 

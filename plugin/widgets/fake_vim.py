@@ -1,5 +1,5 @@
 from mock import MagicMock
-from plugin.widgets.vim_extend  import VimExtend
+from vim_extend  import VimExtend
 import unittest
 
 class FakeWindow:

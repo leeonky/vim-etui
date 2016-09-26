@@ -1,7 +1,7 @@
 from mock import patch
 from plugin.widgets.list_menu import ListMenu
 from plugin.widgets.dropdown_form import DropdownForm
-from plugin.tests.fake_vim import TestWithFakeVim
+from plugin.widgets.fake_vim import TestWithFakeVim
 
 class TestListMenu(TestWithFakeVim):
 
