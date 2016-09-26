@@ -14,9 +14,12 @@ import message_box
 import list_menu
 import rich_message_box
 import dropdown_form
+import stateful_object
 
 class ETUI(object):
 	DropdownForm = rich_message_box.DropdownForm
+	StatefulObject = stateful_object.StatefulObject
+
 	class MessageBox(message_box.MessageBox):
 		DEFAULT_EXIT_KEYS = ['<CR>', '<C-C>']
 		DEFAULT_HEIGHT = 15
