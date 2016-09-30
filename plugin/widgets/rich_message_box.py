@@ -16,17 +16,18 @@ class RichMessageBox(DropdownForm, StatefulObject):
 		self.last_high_light = HighLight()
 		self.last_position = None
 
-	def append_rich(self, row):
+	def append_rich(self, *rows):
 		self.vim.set_local('modifiable')
-		row_index = len(self.vim.current.buffer)+1
+		for row in rows:
+			row_index = len(self.vim.current.buffer)+1
 
-		match = re.search(RichMessageBox.ansi_regex, row)
-		while(match):
-			self._process_ansi_match(match.group(1), row_index, match.start()+1)
-			row = row[:match.start()] + row[match.end():]
 			match = re.search(RichMessageBox.ansi_regex, row)
+			while(match):
+				self._process_ansi_match(match.group(1), row_index, match.start()+1)
+				row = row[:match.start()] + row[match.end():]
+				match = re.search(RichMessageBox.ansi_regex, row)
 
-		self.vim.current.buffer.append(row)
+			self.vim.current.buffer.append(row)
 		self.vim.set_local('nomodifiable')
 
 	def _process_ansi_match(self, ansi_code, row, col):
