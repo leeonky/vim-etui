@@ -16,7 +16,7 @@ import rich_message_box
 import dropdown_form
 import stateful_object
 
-class ETUI(object):
+class VimETUI(object):
 	DropdownForm = rich_message_box.DropdownForm
 	StatefulObject = stateful_object.StatefulObject
 
@@ -26,10 +26,10 @@ class ETUI(object):
 		def __init__(self, **options):
 			options.setdefault('message', '')
 			options.setdefault('title', '')
-			options.setdefault('height', ETUI.MessageBox.DEFAULT_HEIGHT)
-			options.setdefault('open_where', ETUI.DropdownForm.Position.Bottom)
-			options.setdefault('close_keys', ETUI.MessageBox.DEFAULT_EXIT_KEYS)
-			super(ETUI.MessageBox, self).__init__(ETUI.vim(), **options)
+			options.setdefault('height', VimETUI.MessageBox.DEFAULT_HEIGHT)
+			options.setdefault('open_where', VimETUI.DropdownForm.Position.Bottom)
+			options.setdefault('close_keys', VimETUI.MessageBox.DEFAULT_EXIT_KEYS)
+			super(VimETUI.MessageBox, self).__init__(VimETUI.vim(), **options)
 
 	class ListMenu(list_menu.ListMenu):
 		DEFAULT_EXIT_KEYS = ['<C-C>']
@@ -38,20 +38,20 @@ class ETUI(object):
 			options.setdefault('lines', [])
 			options.setdefault('colors', [])
 			options.setdefault('title', '')
-			options.setdefault('height', ETUI.ListMenu.DEFAULT_HEIGHT)
-			options.setdefault('open_where', ETUI.DropdownForm.Position.Bottom)
+			options.setdefault('height', VimETUI.ListMenu.DEFAULT_HEIGHT)
+			options.setdefault('open_where', VimETUI.DropdownForm.Position.Bottom)
 			options.setdefault('keys', [])
-			options.setdefault('export_model', 'ETUI')
-			options.setdefault('close_keys', ETUI.ListMenu.DEFAULT_EXIT_KEYS)
-			super(ETUI.ListMenu, self).__init__(ETUI.vim(), **options)
+			options.setdefault('export_model', 'VimETUI')
+			options.setdefault('close_keys', VimETUI.ListMenu.DEFAULT_EXIT_KEYS)
+			super(VimETUI.ListMenu, self).__init__(VimETUI.vim(), **options)
 
 	class RichMessageBox(rich_message_box.RichMessageBox):
 		DEFAULT_HEIGHT = 15
 		def __init__(self, **options):
 			options.setdefault('title', '')
-			options.setdefault('height', ETUI.ListMenu.DEFAULT_HEIGHT)
-			options.setdefault('open_where', ETUI.DropdownForm.Position.Bottom)
-			super(ETUI.RichMessageBox, self).__init__(ETUI.vim(), **options)
+			options.setdefault('height', VimETUI.ListMenu.DEFAULT_HEIGHT)
+			options.setdefault('open_where', VimETUI.DropdownForm.Position.Bottom)
+			super(VimETUI.RichMessageBox, self).__init__(VimETUI.vim(), **options)
 
 	@staticmethod
 	def vim():
@@ -73,9 +73,9 @@ python << endOfPython
 
 def test_show(key):
 	print key
-	print ETUI.vim().current_cursor()
+	print VimETUI.vim().current_cursor()
 
-ETUI.ListMenu(title=vim.eval('a:title'), lines=vim.eval('a:lines'), colors=vim.eval('a:colors'), keys=vim.eval('a:keys'), handler=test_show).show()
+VimETUI.ListMenu(title=vim.eval('a:title'), lines=vim.eval('a:lines'), colors=vim.eval('a:colors'), keys=vim.eval('a:keys'), handler=test_show).show()
 
 endOfPython
 endfunction
@@ -88,7 +88,7 @@ command! -nargs=* ETestLM call TestListMenu(<f-args>)
 function! TestRichBox(file)
 python << endOfPython
 
-rich_message_box = ETUI.RichMessageBox(title='Test')
+rich_message_box = VimETUI.RichMessageBox(title='Test')
 rich_message_box.show()
 with open(vim.eval('a:file')) as f:
     for line in f:
