@@ -92,7 +92,7 @@ rich_message_box = ETUI.RichMessageBox(title='Test')
 rich_message_box.show()
 with open(vim.eval('a:file')) as f:
     for line in f:
-		rich_message_box.append_rich(line)
+		rich_message_box.append(line)
 
 endOfPython
 endfunction

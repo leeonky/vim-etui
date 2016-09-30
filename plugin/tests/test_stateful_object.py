@@ -9,6 +9,11 @@ class TestStatefulObject(unittest.TestCase):
 		obj = StatefulObject('test')
 		self.assertEqual(obj, StatefulObject.get('test'))
 
+	def test_create_set_with_name(self):
+		obj = object()
+		StatefulObject.set('new_obj', obj)
+		self.assertEqual(obj, StatefulObject.get('new_obj'))
+
 	def test_delete(self):
 		obj = StatefulObject('test')
 		StatefulObject.delete('test')

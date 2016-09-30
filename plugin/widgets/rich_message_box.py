@@ -1,9 +1,8 @@
 from dropdown_form import DropdownForm
 from high_light import HighLight
-from stateful_object import StatefulObject
 import re
 
-class RichMessageBox(DropdownForm, StatefulObject):
+class RichMessageBox(DropdownForm):
 	ansi_regex = r"\033\[(\d+(;\d+)*)m"
 
 	def __init__(self, vim, title='', height=10, open_where=DropdownForm.Position.Bottom):
@@ -11,12 +10,11 @@ class RichMessageBox(DropdownForm, StatefulObject):
 			DropdownForm.OpenShow(open_where, height, title),
 			DropdownForm.NormalForm(),
 			DropdownForm.DisableEdit())
-		StatefulObject.__init__(self, title)
 		self.vim = vim
 		self.last_high_light = HighLight()
 		self.last_position = None
 
-	def append_rich(self, *rows):
+	def append(self, *rows):
 		self.vim.set_local('modifiable')
 		for row in rows:
 			row_index = len(self.vim.current.buffer)+1

@@ -16,6 +16,12 @@ class StatefulObject(object):
 		return statefull_object_list_locker.synchronized(get_object)
 
 	@staticmethod
+	def set(name, obj):
+		def set_object():
+			statefull_object_list[name] = obj
+		statefull_object_list_locker.synchronized(set_object)
+
+	@staticmethod
 	def delete(name):
 		def delete_object():
 			statefull_object_list.pop(name, None)
