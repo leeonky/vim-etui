@@ -24,14 +24,14 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_line_without_high_light(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("Hello")
+		box.append(["Hello"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
 
 	def test_append_one_line_with_high_light(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[30mHello\033[0m")
+		box.append(["\033[30mHello\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -41,7 +41,7 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_one_line_with_two_high_lights(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[30mHello\033[0m\033[31mHello\033[0m")
+		box.append(["\033[30mHello\033[0m\033[31mHello\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['HelloHello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -53,7 +53,7 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_one_line_with_change_high_light(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[30mHello\033[40mHello\033[0m\033[0m")
+		box.append(["\033[30mHello\033[40mHello\033[0m\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['HelloHello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -65,7 +65,7 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_one_line_with_multi_high_light_in_two_ansi_code(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[30m\033[40mHello\033[0m\033[0m")
+		box.append(["\033[30m\033[40mHello\033[0m\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -75,7 +75,7 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_one_line_with_multi_high_light_in_another_two_ansi_code(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[90m\033[100mHello\033[0m\033[0m")
+		box.append(["\033[90m\033[100mHello\033[0m\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -85,7 +85,7 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_one_line_with_styles(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[1m\033[4m\033[7mHello\033[21m\033[24m\033[27m\033[30mHello\033[0m\033[0m")
+		box.append(["\033[1m\033[4m\033[7mHello\033[21m\033[24m\033[27m\033[30mHello\033[0m\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['HelloHello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -97,7 +97,7 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_one_line_with_multi_high_light_in_one_ansi_code(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[1;4;7mHello\033[0m")
+		box.append(["\033[1;4;7mHello\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -107,8 +107,8 @@ class TestRichMessageBox(TestWithFakeVim):
 	def test_append_one_line_with_special_ansi_code(self):
 		box = RichMessageBox(self.vim, title='title')
 
-		box.append("\033[30mHello\033[0m")
-		box.append("\033[0;30mHello\033[0m")
+		box.append(["\033[30mHello\033[0m"])
+		box.append(["\033[0;30mHello\033[0m"])
 
 		self.assertEqual(self.vim.current.buffer[:], ['Hello', 'Hello'])
 		self.assertEqual(self.vim.command.call_args_list, [
@@ -116,3 +116,13 @@ class TestRichMessageBox(TestWithFakeVim):
 			call('syntax region etui_hl_fg0 start=/\%1l\%1c/ end=/\%1l\%6c/'),
 			call('highlight etui_hl_fg0 ctermfg=0 guifg=0'),
 			call('syntax region etui_hl_fg0 start=/\%2l\%1c/ end=/\%2l\%6c/')])
+
+	def test_should_trim_the_empty_line_first(self):
+		self.vim.current.buffer = ['']
+		box = RichMessageBox(self.vim, title='title')
+		box.show()
+
+		box.append(["Hello"])
+
+		self.assertEqual(self.vim.current.buffer[:], ['Hello'])
+

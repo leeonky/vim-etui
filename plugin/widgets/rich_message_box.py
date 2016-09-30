@@ -14,10 +14,20 @@ class RichMessageBox(DropdownForm):
 		self.last_high_light = HighLight()
 		self.last_position = None
 
-	def append(self, *rows):
+	def show(self):
+		super(RichMessageBox, self).show()
+		self.vim.set_local('modifiable')
+		if sorted(set(self.vim.current.buffer[:])) == ['']:
+			self.vim.current.buffer[:] = []
+		self.vim.set_local('nomodifiable')
+
+	def append(self, rows):
 		self.vim.set_local('modifiable')
 		for row in rows:
-			row_index = len(self.vim.current.buffer)+1
+			if len(self.vim.current.buffer)==1 and self.vim.current.buffer[:]==['']:
+				row_index = 1
+			else:
+				row_index = len(self.vim.current.buffer)+1
 
 			match = re.search(RichMessageBox.ansi_regex, row)
 			while(match):
@@ -25,7 +35,10 @@ class RichMessageBox(DropdownForm):
 				row = row[:match.start()] + row[match.end():]
 				match = re.search(RichMessageBox.ansi_regex, row)
 
-			self.vim.current.buffer.append(row)
+			if row_index == 1:
+				self.vim.current.buffer[:] = [row]
+			else:
+				self.vim.current.buffer.append(row)
 		self.vim.set_local('nomodifiable')
 
 	def _process_ansi_match(self, ansi_code, row, col):
