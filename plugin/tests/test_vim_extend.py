@@ -1,7 +1,7 @@
 import unittest
 from mock import MagicMock
-from plugin.widgets.fake_vim import TestWithFakeVim
-from plugin.widgets.fake_vim import FakeVim
+from plugin.tests.fake_vim import TestWithFakeVim
+from plugin.tests.fake_vim import FakeVim
 from plugin.widgets.vim_extend import VimExtend
 from plugin.widgets.high_light import HighLight
 

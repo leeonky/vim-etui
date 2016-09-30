@@ -1,6 +1,6 @@
 import unittest
 from plugin.widgets.high_light import HighLight
-from plugin.widgets.fake_vim import TestWithFakeVim
+from plugin.tests.fake_vim import TestWithFakeVim
 
 class TestHighLight(TestWithFakeVim):
 
