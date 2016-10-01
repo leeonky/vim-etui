@@ -5,6 +5,7 @@ python import sys
 python import vim
 python sys.path.append(vim.eval('expand("<sfile>:h")'))
 python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets')
+python sys.path.append(vim.eval('expand("<sfile>:h")')+'/widgets/libs')
 
 python << endOfPython
 import vim
@@ -15,10 +16,12 @@ import list_menu
 import rich_message_box
 import dropdown_form
 import stateful_object
+import extended_lock
 
 class VimETUI(object):
 	DropdownForm = rich_message_box.DropdownForm
 	StatefulObject = stateful_object.StatefulObject
+	Lock = extended_lock.Lock
 
 	class MessageBox(message_box.MessageBox):
 		DEFAULT_EXIT_KEYS = ['<CR>', '<C-C>']
